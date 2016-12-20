@@ -8,6 +8,8 @@
 
 #import "GameViewController.h"
 #import "GameScene.h"
+#import "Board.h"
+#import "BoardView.h"
 
 @implementation GameViewController
 
@@ -27,6 +29,21 @@
     
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
+    
+    Board *testBoard = [[Board alloc] initWithScale:10];
+    BoardView *boardView = [[BoardView alloc] initWithBoard:testBoard];
+    
+    [self.view addSubview:boardView];
+    
+//    [Utils print:testBoard.boardArray tag:@"Board"];
+    for (int y = 0; y < testBoard.scale; y++) {
+        NSString *rowString = @"";
+        for (int x = 0; x < testBoard.scale; x++) {
+            rowString = [NSString stringWithFormat:@"%@ %@", rowString, [testBoard numberForPoint:CGPointMake(x, y)]];
+        }
+        
+        [Utils printString:rowString];
+    }
 }
 
 - (BOOL)shouldAutorotate {
