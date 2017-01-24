@@ -11,6 +11,7 @@
 #import "Board.h"
 #import "BoardView.h"
 #import "SpaceView.h"
+#import <CoreMotion/CoreMotion.h>
 
 @implementation GameViewController {
     Player *testPlayerBlue;
@@ -32,6 +33,9 @@
     
     /// Recognizes swipes on board down
     UISwipeGestureRecognizer *swipeRecognizerDown;
+    
+    /// Manages motion
+    CMMotionManager *manager;
 }
 
 - (void)viewDidLoad {
@@ -111,6 +115,17 @@
     
     //skView.showsFPS = YES;
     //skView.showsNodeCount = YES;
+    
+//    manager = [[CMMotionManager alloc] init];
+//    
+//    if (manager.deviceMotionAvailable) {
+//        manager.deviceMotionUpdateInterval = 0.01f;
+//        [manager startDeviceMotionUpdatesToQueue:[NSOperationQueue mainQueue]
+//                                     withHandler:^(CMDeviceMotion *data, NSError *error) {
+//                                         double rotation = atan2(data.gravity.x, data.gravity.y) - M_PI;
+//                                         self.scrollView.transform = CGAffineTransformMakeRotation(rotation);
+//                                     }];
+//    }
 }
 
 - (void) viewDidAppear:(BOOL)animated {

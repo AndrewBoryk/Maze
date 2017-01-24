@@ -23,6 +23,7 @@
 		45331CBE1E0905BD00E3B668 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331CBD1E0905BD00E3B668 /* Player.m */; };
 		45331CC31E09081E00E3B668 /* Board.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331CC21E09081E00E3B668 /* Board.m */; };
 		45331CC71E090DEC00E3B668 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331CC61E090DEC00E3B668 /* Utils.m */; };
+		45425AFA1E37A444006E67AB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45425AF91E37A444006E67AB /* CoreMotion.framework */; };
 		45AE22C51E36F740004B9F00 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AE22C41E36F740004B9F00 /* PlayerView.m */; };
 		45ECF7301E098DA80008108C /* SpaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF72F1E098DA80008108C /* SpaceView.m */; };
 		45ECF7331E0991D30008108C /* Appearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF7321E0991D30008108C /* Appearance.m */; };
@@ -78,6 +79,7 @@
 		45331CC21E09081E00E3B668 /* Board.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Board.m; sourceTree = "<group>"; };
 		45331CC51E090DEC00E3B668 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		45331CC61E090DEC00E3B668 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		45425AF91E37A444006E67AB /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		45AE22C31E36F740004B9F00 /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
 		45AE22C41E36F740004B9F00 /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
 		45ECF72E1E098DA80008108C /* SpaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceView.h; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45425AFA1E37A444006E67AB /* CoreMotion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +123,7 @@
 				45331C9A1E08FC7E00E3B668 /* mazeTests */,
 				45331CA51E08FC7E00E3B668 /* mazeUITests */,
 				45331C781E08FC7E00E3B668 /* Products */,
+				45425AF81E37A444006E67AB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -228,6 +232,14 @@
 				45ECF7381E0999A70008108C /* BoardView.m */,
 			);
 			name = Board;
+			sourceTree = "<group>";
+		};
+		45425AF81E37A444006E67AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45425AF91E37A444006E67AB /* CoreMotion.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
