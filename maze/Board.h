@@ -8,8 +8,21 @@
 
 #import "Maze-Prefix.pch"
 #import "Space.h"
+@class SpaceView;
 
 @interface Board : NSObject
+
+/// Current board instance
++ (id)sharedInstance;
+
+/// Set the current board
++ (void) setCurrentBoard: (Board *) board;
+
+/// Return the current board
++ (Board *) currentBoard;
+
+/// Current board
+@property (strong, nonatomic) Board *currentBoardInstance;
 
 /// Array which holds coordinates for board
 @property (strong, nonatomic) NSMutableArray *boardArray;
@@ -47,6 +60,11 @@
 /// Replace a point on the board with a space
 - (BOOL) replacePoint:(CGPoint)point withSpace:(Space *)space;
 
+/// Adjusts a space
+- (BOOL) adjustSpace:(Space *)space;
+
 /// Log the board to console
 - (void) printBoard;
+
+
 @end

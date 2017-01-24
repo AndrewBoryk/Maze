@@ -7,7 +7,7 @@
 //
 
 #import "Board.h"
-
+#import "SpaceView.h"
 @implementation Board
 
 - (instancetype) init {
@@ -128,6 +128,24 @@
     return wallNumber.integerValue;
 }
 
+- (BOOL) adjustSpace:(Space *)space {
+    
+    if ([Utils notNull:space]) {
+        if (space.position.x < self.width && space.position.y < self.height) {
+            if (space.position.y < self.boardArray.count) {
+                NSMutableArray *rowArray = [[self.boardArray objectAtIndex:space.position.y] mutableCopy];
+                if (space.position.x < rowArray.count) {
+                    [rowArray setObject:space atIndexedSubscript:space.position.x];
+                    [self.boardArray setObject:rowArray atIndexedSubscript:space.position.y];
+                    return YES;
+                }
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (BOOL) replacePoint:(CGPoint)point withType:(SpaceType)type {
     
     if (point.x < self.width && point.y < self.height) {
@@ -137,6 +155,7 @@
                 Space *space = [[Space alloc] initWithType:type position:point];
                 [rowArray setObject:space atIndexedSubscript:point.x];
                 [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
+                [[BoardView currentBoardView] replaceSpace:space];
                 return YES;
             }
         }
@@ -153,6 +172,7 @@
             if (point.x < rowArray.count) {
                 [rowArray setObject:space atIndexedSubscript:point.x];
                 [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
+                [[BoardView currentBoardView] replaceSpace:space];
                 return YES;
             }
         }
@@ -174,4 +194,23 @@
     [Utils printString:@"-------"];
 }
 
+
+
++ (id)sharedInstance {
+    static Board *sharedMyInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMyInstance = [[self alloc] init];
+        
+    });
+    return sharedMyInstance;
+}
+
++ (void) setCurrentBoard:(Board *)board {
+    [[Board sharedInstance] setCurrentBoardInstance:board];
+}
+
++ (Board *) currentBoard {
+    return [[Board sharedInstance] currentBoardInstance];
+}
 @end

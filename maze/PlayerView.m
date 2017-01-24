@@ -24,7 +24,7 @@
 }
 */
 
-- (instancetype) initWithPlayer: (Player *) player inBoard: (BoardView *) boardView {
+- (instancetype) initWithPlayer: (Player *) player {
     self = [super init];
     
     if (self) {
@@ -53,7 +53,7 @@
         centerCircle.layer.cornerRadius = centerCircle.frame.size.width / 2.0f;
         
         
-        SpaceView *tempSpaceView = [boardView spaceViewForPoint: player.position];
+        SpaceView *tempSpaceView = [[BoardView currentBoardView] spaceViewForPoint: player.position];
         self.center = tempSpaceView.center;
         
         whiteCircle.center = CGPointMake(self.frame.size.width/2.0f, self.frame.size.height/2.0f);

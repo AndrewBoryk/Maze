@@ -46,5 +46,5 @@
 - (instancetype) initWithSpace:(Space *)space width:(NSInteger)width height:(NSInteger) height;
 
 /// Adjust the space
-+ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType inBoard: (BoardView *) boardView withStrength: (float) strength;
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType withStrength: (float) strength;
 @end

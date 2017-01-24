@@ -45,9 +45,9 @@
     return self;
 }
 
-+ (BOOL) canPass:(CGPoint )point inBoard: (Board *)board playerType:(PlayerType)playerType {
++ (BOOL) canPass:(CGPoint )point playerType:(PlayerType)playerType {
     
-    Space *space = [board spaceForPoint:point];
+    Space *space = [[Board currentBoard] spaceForPoint:point];
     if ([Utils notNull:space]) {
         if (playerType == PlayerTypeFriendly) {
             if (space.type == SpaceTypeFriendly) {
@@ -60,10 +60,6 @@
             }
         }
     }
-    
-    
-   
-    
     return NO;
 }
 

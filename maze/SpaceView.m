@@ -89,6 +89,38 @@
             self.backgroundColor = [Utils colorWithHexString:@"e74c3c"];
             self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
         }
+        else if (self.space.type == SpaceTypeEmpty) {
+            if (self.space.friendlyPercentage > 0) {
+                
+                self.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:self.space.friendlyPercentage];
+                self.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
+                if (self.space.friendlyPercentage == 1) {
+                    self.space.type = SpaceTypeFriendly;
+                }
+                else {
+                    self.space.type = SpaceTypeEmpty;
+                }
+                
+            }
+            else if (self.space.enemyPercentage > 0) {
+                
+                self.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:self.space.enemyPercentage];
+                self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
+                if (self.space.enemyPercentage == 1) {
+                    self.space.type = SpaceTypeEnemy;
+                }
+                else {
+                    self.space.type = SpaceTypeEmpty;
+                }
+            }
+            else {
+                self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
+                self.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
+                self.space.type = SpaceTypeEmpty;
+            }
+        }
+        
+        
 
         tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tapRecognizer.numberOfTapsRequired = 1;
@@ -120,10 +152,10 @@
         if (absoluteX <= 2 && absoluteY <= 2) {
             if (!(absoluteX == 2 && absoluteY == 2)) {
                 if (absoluteX == 2 || absoluteY == 2) {
-                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] inBoard:(BoardView *)self.superview withStrength:0.5f];
+                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] withStrength:0.5f];
                 }
                 else {
-                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] inBoard:(BoardView *)self.superview withStrength:1.0f];
+                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] withStrength:1.0f];
                 }
                 
             }
@@ -134,8 +166,8 @@
     
 }
 
-+ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType inBoard: (BoardView *) boardView withStrength: (float) strength {
-    SpaceView *spaceView = [boardView spaceViewForPoint:position];
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType withStrength: (float) strength {
+    SpaceView *spaceView = [[BoardView currentBoardView] spaceViewForPoint:position];
     
     if ([Utils notNull:spaceView]) {
         if ([Utils notNull:spaceView.space]) {
@@ -202,17 +234,17 @@
     }
     
     
-    if (![Utils notNull:boardView.spaces]) {
-        boardView.spaces = [[NSMutableDictionary alloc] init];
+    if (![Utils notNull:[BoardView currentBoardView].spaces]) {
+        [BoardView currentBoardView].spaces = [[NSMutableDictionary alloc] init];
     }
     
     NSString *spaceKey = [NSString stringWithFormat:@"%i:%i", (int)position.x, (int)position.y];
     
     if ([Utils notNull:spaceKey]) {
-        [boardView.spaces setObject:spaceView forKey:spaceKey];
+        [[BoardView currentBoardView].spaces setObject:spaceView forKey:spaceKey];
     }
     
-    [boardView.board replacePoint:position withSpace:spaceView.space];
+    [[BoardView currentBoardView].board adjustSpace:spaceView.space];
     
 }
 

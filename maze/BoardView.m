@@ -79,7 +79,7 @@
             
             if (!found) {
                 [self.board.playerArray addObject:player];
-                PlayerView *playerView = [[PlayerView alloc] initWithPlayer:player inBoard:self];
+                PlayerView *playerView = [[PlayerView alloc] initWithPlayer:player];
                 [self.board.playerViewArray addObject:playerView];
                 [self addSubview:playerView];
             }
@@ -134,7 +134,7 @@
         }
         
         if (position.x < self.board.width && position.y < self.board.height) {
-            if ([Space canPass:position inBoard:self.board playerType:player.type]) {
+            if ([Space canPass:position playerType:player.type]) {
                 for (Player *tempPlayer in self.board.playerArray) {
                     if ([Utils notNull:tempPlayer.playerID]) {
                         if ([tempPlayer.playerID isEqualToString:player.playerID]) {
@@ -163,7 +163,54 @@
     }
 }
 
+- (void) setObjectiveOne:(Space *)flagOne {
+    if ([Utils notNull:[BoardView currentBoardView].flagOne]) {
+        [[BoardView currentBoardView].flagOne removeFromSuperview];
+    }
+    
+    [BoardView currentBoardView].flagOne = nil;
+    
+    if ([Utils notNull:flagOne]) {
+        
+        [[[BoardView currentBoardView] board] replacePoint:flagOne.position withSpace:flagOne];
+        [Board setCurrentBoard:[[BoardView currentBoardView] board]];
+        
+        [BoardView currentBoardView].flagOne = [[BoardView currentBoardView] spaceViewForPoint:flagOne.position];
+    }
+}
 
+- (void) setObjectiveTwo:(Space *)flagTwo {
+    if ([Utils notNull:[BoardView currentBoardView].flagTwo]) {
+        [[BoardView currentBoardView].flagTwo removeFromSuperview];
+    }
+    
+    [BoardView currentBoardView].flagTwo = nil;
+    
+    if ([Utils notNull:flagTwo]) {
+        
+        
+        [[[BoardView currentBoardView] board] replacePoint:flagTwo.position withSpace:flagTwo];
+        [Board setCurrentBoard:[[BoardView currentBoardView] board]];
+        
+        [BoardView currentBoardView].flagTwo = [[BoardView currentBoardView] spaceViewForPoint:flagTwo.position];
+    }
+}
+
+- (void) setObjectiveThree:(Space *)flagThree {
+    if ([Utils notNull:[BoardView currentBoardView].flagThree]) {
+        [[BoardView currentBoardView].flagThree removeFromSuperview];
+    }
+    
+    [BoardView currentBoardView].flagThree = nil;
+    
+    if ([Utils notNull:flagThree]) {
+        
+        [[[BoardView currentBoardView] board] replacePoint:flagThree.position withSpace:flagThree];
+        [Board setCurrentBoard:[[BoardView currentBoardView] board]];
+        
+        [BoardView currentBoardView].flagThree = [[BoardView currentBoardView] spaceViewForPoint:flagThree.position];
+    }
+}
 - (SpaceView *) spaceViewForPoint: (CGPoint) point {
     
     if ([Utils notNull:self.spaces]) {
@@ -173,5 +220,33 @@
     }
     
     return nil;
+}
+
++ (id)sharedInstance {
+    static BoardView *sharedMyInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMyInstance = [[self alloc] init];
+        
+    });
+    return sharedMyInstance;
+}
+
++ (void) setCurrentBoardView:(BoardView *)boardView {
+    [[BoardView sharedInstance] setCurrentBoardViewInstance:boardView];
+}
+
++ (BoardView *) currentBoardView {
+    return [[BoardView sharedInstance] currentBoardViewInstance];
+}
+
+- (void) replaceSpace: (Space *)space {
+    [[BoardView currentBoardView] spaceViewForPoint:space.position];
+    
+    SpaceView *spaceView = [[SpaceView alloc] initWithSpace:space width:[BoardView currentBoardView].board.width height:[BoardView currentBoardView].board.height];
+    [[BoardView currentBoardView] addSubview:spaceView];
+    
+    NSString *spaceKey = [NSString stringWithFormat:@"%i:%i", (int)space.position.x, (int)space.position.y];
+    [[BoardView currentBoardView].spaces setObject:spaceView forKey:spaceKey];
 }
 @end

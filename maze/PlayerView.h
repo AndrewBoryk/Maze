@@ -17,5 +17,5 @@
 @property (strong, nonatomic) Player *player;
 
 /// Initialize a playerView
-- (instancetype) initWithPlayer: (Player *) player inBoard: (BoardView *) boardView;
+- (instancetype) initWithPlayer: (Player *) player;
 @end

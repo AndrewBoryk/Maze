@@ -18,10 +18,6 @@
     
     Player *testPlayerRed;
     
-    BoardView *boardView;
-    
-    Board *testBoard;
-    
     /// Recognizes swipes on board left
     UISwipeGestureRecognizer *swipeRecognizerLeft;
     
@@ -53,34 +49,48 @@
     
     [[SpaceView sharedInstance] setDefaultSpaceSize:60.0f];
     
-    testBoard = [[Board alloc] initWithWidth:21 height:21];
+    Board *mainBoard = [[Board alloc] initWithWidth:21 height:21];
+
     
-    Space *friendlyHome = [[Space alloc] initWithType:SpaceTypeFriendly position:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
-    friendlyHome.isBase = YES;
+    [Board setCurrentBoard:mainBoard];
     
-    Space *enemyHome = [[Space alloc] initWithType:SpaceTypeEnemy position:CGPointMake(testBoard.width / 2, 1)];
-    enemyHome.isBase = YES;
-    
-    Space *emptyFlag = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake(testBoard.width / 2, testBoard.height/2)];
-    emptyFlag.isFlag = YES;
-    
-    [testBoard replacePoint:friendlyHome.position withSpace:friendlyHome];
-    [testBoard replacePoint:enemyHome.position withSpace:enemyHome];
-    [testBoard replacePoint:emptyFlag.position withSpace:emptyFlag];
-    
-    boardView = [[BoardView alloc] initWithBoard:testBoard];
-    
-    testPlayerBlue = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
-    testPlayerRed = [[Player alloc] initWithType:PlayerTypeEnemy playerID:@"12346" withPosition:CGPointMake(testBoard.width / 2, 1)];
+    testPlayerBlue = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
+    testPlayerRed = [[Player alloc] initWithType:PlayerTypeEnemy playerID:@"12346" withPosition:CGPointMake([Board currentBoard].width / 2, 1)];
     
     [Player setCurrentPlayer:testPlayerBlue];
     
     [self setSwitchBackground];
     
-    [boardView addPlayer:testPlayerBlue];
-    [boardView addPlayer:testPlayerRed];
+    BoardView *mainBoardView = [[BoardView alloc] initWithBoard:mainBoard];
+    [BoardView setCurrentBoardView:mainBoardView];
     
-    [self.scrollView addSubview:boardView];
+    Space *friendlyHome = [[Space alloc] initWithType:SpaceTypeFriendly position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
+    friendlyHome.isBase = YES;
+    
+    Space *enemyHome = [[Space alloc] initWithType:SpaceTypeEnemy position:CGPointMake([Board currentBoard].width / 2, 1)];
+    enemyHome.isBase = YES;
+    
+    Space *emptyFlagOne = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height/2)];
+    emptyFlagOne.isFlag = YES;
+    
+    Space *emptyFlagTwo = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake([Board currentBoard].width / 2 + 2, [Board currentBoard].height/2)];
+    emptyFlagTwo.isFlag = YES;
+    
+    Space *emptyFlagThree = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake([Board currentBoard].width / 2 - 2, [Board currentBoard].height/2)];
+    emptyFlagThree.isFlag = YES;
+    
+    [[Board currentBoard] replacePoint:friendlyHome.position withSpace:friendlyHome];
+    [[Board currentBoard] replacePoint:enemyHome.position withSpace:enemyHome];
+    [[BoardView currentBoardView] setObjectiveOne:emptyFlagOne];
+    [[BoardView currentBoardView] setObjectiveTwo:emptyFlagTwo];
+    [[BoardView currentBoardView] setObjectiveThree:emptyFlagThree];
+    
+    [[BoardView currentBoardView] addPlayer:testPlayerBlue];
+    [[BoardView currentBoardView] addPlayer:testPlayerRed];
+    
+    
+    
+    [self.scrollView addSubview:[BoardView currentBoardView]];
     
 //    [Utils print:testBoard.boardArray tag:@"Board"];
     //[testBoard printBoard];
@@ -116,6 +126,7 @@
     //skView.showsFPS = YES;
     //skView.showsNodeCount = YES;
     
+    self.scrollView.clipsToBounds = NO;
 //    manager = [[CMMotionManager alloc] init];
 //    
 //    if (manager.deviceMotionAvailable) {
@@ -197,7 +208,7 @@ int gcd (int a, int b){
     
     
     [UIView animateWithDuration:0.2f animations:^{
-        [boardView movePlayer:player toPosition:newPosition];
+        [[BoardView currentBoardView] movePlayer:player toPosition:newPosition];
     }];
     
     [self setScrollOffset];
@@ -213,8 +224,8 @@ int gcd (int a, int b){
     CGFloat newContentOffsetX = ([Player currentPlayer].position.x + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenWidth]/2.0f;
     CGFloat newContentOffsetY = ([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenHeight]/2.0f;
 //    CGFloat newContentOffsetY = (([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize]) - [Utils screenHeight] + [[SpaceView sharedInstance] defaultSpaceSize];
-    CGFloat rightEdgeBuffer = (boardView.frame.size.width - [Utils screenWidth]);
-    CGFloat bottomEdgeBuffer = (boardView.frame.size.height - [Utils screenHeight]);
+    CGFloat rightEdgeBuffer = ([BoardView currentBoardView].frame.size.width - [Utils screenWidth]);
+    CGFloat bottomEdgeBuffer = ([BoardView currentBoardView].frame.size.height - [Utils screenHeight]);
     
     //NSLog(@"Right edge buffer: %f", rightEdgeBuffer);
     if (newContentOffsetY < 0) {

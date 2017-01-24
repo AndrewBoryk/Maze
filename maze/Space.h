@@ -31,7 +31,7 @@
 @property BOOL isBase;
 
 /// Determines if player can pass through wall going in a direction
-+ (BOOL) canPass:(CGPoint )point inBoard: (Board *)board playerType: (PlayerType) playerType;
++ (BOOL) canPass:(CGPoint )point playerType: (PlayerType) playerType;
 
 /// Inits a space for type
 - (instancetype) initWithType: (SpaceType) type position: (CGPoint)position;
