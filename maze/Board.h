@@ -44,4 +44,9 @@
 /// Replaces a space with a new space
 - (BOOL) replacePoint: (CGPoint) point withType:(SpaceType) type;
 
+/// Replace a point on the board with a space
+- (BOOL) replacePoint:(CGPoint)point withSpace:(Space *)space;
+
+/// Log the board to console
+- (void) printBoard;
 @end

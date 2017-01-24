@@ -144,4 +144,34 @@
     
     return NO;
 }
+
+- (BOOL) replacePoint:(CGPoint)point withSpace:(Space *)space {
+    
+    if (point.x < self.width && point.y < self.height && [Utils notNull:space]) {
+        if (point.y < self.boardArray.count) {
+            NSMutableArray *rowArray = [[self.boardArray objectAtIndex:point.y] mutableCopy];
+            if (point.x < rowArray.count) {
+                [rowArray setObject:space atIndexedSubscript:point.x];
+                [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (void) printBoard {
+    [Utils printString:@"Board:"];
+    for (int y = 0; y < self.height; y++) {
+        NSString *rowString = @"";
+        for (int x = 0; x < self.width; x++) {
+            rowString = [NSString stringWithFormat:@"%@ %@", rowString, [self numberForPoint:CGPointMake(x, y)]];
+        }
+        
+        [Utils printString:rowString];
+    }
+    [Utils printString:@"-------"];
+}
+
 @end

@@ -45,7 +45,7 @@
     
     [[SpaceView sharedInstance] setDefaultSpaceSize:40.0f];
     
-    testBoard = [[Board alloc] initWithWidth:(([Utils screenWidth] + ([[SpaceView sharedInstance] defaultSpaceSize] * 2.0f))/[[SpaceView sharedInstance] defaultSpaceSize]) height:(([Utils screenHeight] + ([[SpaceView sharedInstance] defaultSpaceSize] * 2.0f))/[[SpaceView sharedInstance] defaultSpaceSize])];
+    testBoard = [[Board alloc] initWithWidth:18 height:18];
     
     [testBoard replacePoint:CGPointMake(testBoard.width / 2, 1) withType:SpaceTypeEnemyHome];
     [testBoard replacePoint:CGPointMake(testBoard.width / 2, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
@@ -63,14 +63,7 @@
     [self.view addSubview:boardView];
     
 //    [Utils print:testBoard.boardArray tag:@"Board"];
-    for (int y = 0; y < testBoard.height; y++) {
-        NSString *rowString = @"";
-        for (int x = 0; x < testBoard.width; x++) {
-            rowString = [NSString stringWithFormat:@"%@ %@", rowString, [testBoard numberForPoint:CGPointMake(x, y)]];
-        }
-        
-        [Utils printString:rowString];
-    }
+    [testBoard printBoard];
     
     
     swipeRecognizerLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
@@ -172,10 +165,14 @@ int gcd (int a, int b){
     [UIView animateWithDuration:0.1f animations:^{
         [boardView movePlayer:player toPosition:newPosition];
     }];
+    
+    [testBoard printBoard];
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
+
+
 
 @end

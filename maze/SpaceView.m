@@ -100,69 +100,6 @@
     return self;
 }
 
-- (void) maskLayerMake: (WallType) maskType{
-    UIBezierPath *maskPath;
-    
-    CGFloat cornerRadius = (self.size * 0.1f) / 2.0f;
-    
-    if (maskType == WallTypeLeftUp) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerTopLeft)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeLeftDown) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerBottomLeft)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeLeftUpDown) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerTopLeft)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeRightUp) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerTopRight)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeRightDown) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerBottomRight)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeRightUpDown) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerBottomRight|UIRectCornerTopRight)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeLeftRightUp) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeLeftRightDown) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else if (maskType == WallTypeLeftRightUpDown) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerAllCorners)
-                                               cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
-    }
-    else {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
-                                         byRoundingCorners:(UIRectCornerAllCorners)
-                                               cornerRadii:CGSizeMake(0.0, 0.0)];
-    }
-    
-    
-    
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = self.bounds;
-    maskLayer.path = maskPath.CGPath;
-    self.layer.mask = maskLayer;
-}
 
 - (void) handleTap: (UITapGestureRecognizer *) gesture {
     if (self.space.type != SpaceTypeWall && self.space.type != SpaceTypeEnemyHome && self.space.type != SpaceTypeFriendlyHome) {
@@ -187,18 +124,18 @@
         if ([Utils notNull:spaceView.space]) {
             if (playerType == PlayerTypeFriendly) {
                 if (spaceView.space.enemyPercentage > 0) {
-                    spaceView.space.enemyPercentage-= 0.1f;
+                    spaceView.space.enemyPercentage-= 0.2f;
                 }
                 else if (spaceView.space.friendlyPercentage < 1) {
-                    spaceView.space.friendlyPercentage+= 0.1f;
+                    spaceView.space.friendlyPercentage+= 0.2f;
                 }
             }
             else if (playerType == PlayerTypeEnemy) {
                 if (spaceView.space.friendlyPercentage > 0) {
-                    spaceView.space.friendlyPercentage-= 0.1f;
+                    spaceView.space.friendlyPercentage-= 0.2f;
                 }
                 else if (spaceView.space.enemyPercentage < 1) {
-                    spaceView.space.enemyPercentage+= 0.1f;
+                    spaceView.space.enemyPercentage+= 0.2f;
                 }
             }
             
@@ -258,9 +195,13 @@
         [boardView.spaces setObject:spaceView forKey:spaceKey];
     }
     
+    [boardView.board replacePoint:position withSpace:spaceView.space];
+    
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
+
+
 @end
