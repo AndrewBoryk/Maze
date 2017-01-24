@@ -45,7 +45,7 @@
     
     [[SpaceView sharedInstance] setDefaultSpaceSize:40.0f];
     
-    testBoard = [[Board alloc] initWithWidth:18 height:18];
+    testBoard = [[Board alloc] initWithWidth:21 height:21];
     
     [testBoard replacePoint:CGPointMake(testBoard.width / 2, 1) withType:SpaceTypeEnemyHome];
     [testBoard replacePoint:CGPointMake(testBoard.width / 2, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
@@ -60,7 +60,7 @@
     
     boardView.center = self.view.center;
     
-    [self.view addSubview:boardView];
+    [self.scrollView addSubview:boardView];
     
 //    [Utils print:testBoard.boardArray tag:@"Board"];
     [testBoard printBoard];
@@ -87,6 +87,8 @@
     [self.view addGestureRecognizer:swipeRecognizerRight];
     [self.view addGestureRecognizer:swipeRecognizerDown];
     [self.view addGestureRecognizer:swipeRecognizerUp];
+    
+    [self setScrollOffset];
     
     // Present the scene
     //[skView presentScene:scene];
@@ -162,9 +164,12 @@ int gcd (int a, int b){
         newPosition.y++;
     }
     
+    
     [UIView animateWithDuration:0.1f animations:^{
         [boardView movePlayer:player toPosition:newPosition];
     }];
+    
+    [self setScrollOffset];
     
     [testBoard printBoard];
 }
@@ -173,6 +178,12 @@ int gcd (int a, int b){
     return YES;
 }
 
-
+- (void) setScrollOffset {
+    CGFloat newContentOffsetX = [Player currentPlayer].position.x * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - (self.view.frame.size.width);
+    CGFloat newContentOffsetY = ([Player currentPlayer].position.y * [[SpaceView sharedInstance] defaultSpaceSize]) - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - self.view.frame.size.height;
+    
+    [self.scrollView setContentOffset:CGPointMake(newContentOffsetX, newContentOffsetY) animated:YES];
+    NSLog(@"Content Offset X: %f  Y: %f", newContentOffsetX, newContentOffsetY);
+}
 
 @end
