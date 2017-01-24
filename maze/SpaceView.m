@@ -18,6 +18,28 @@
 }
 */
 
+@synthesize defaultSpaceSize;
+
++ (id)sharedInstance {
+    static SpaceView *sharedMyInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMyInstance = [[self alloc] initInstance];
+        
+    });
+    return sharedMyInstance;
+}
+
+- (instancetype) initInstance {
+    self = [super init];
+    
+    if (self) {
+        self.defaultSpaceSize = 30.0f;
+    }
+    
+    return self;
+}
+
 - (instancetype) initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     
@@ -39,8 +61,9 @@
     return self;
 }
 
-- (instancetype) initWithSpace:(Space *)space scale:(NSInteger)scale {
-    CGFloat spaceSize = (([Utils screenWidth] - 80.0f) / scale);
+- (instancetype) initWithSpace:(Space *)space width:(NSInteger)width height:(NSInteger)height {
+//    CGFloat spaceSize = ([Utils screenWidth] / width);
+    CGFloat spaceSize = [[SpaceView sharedInstance] defaultSpaceSize];
     CGFloat xPosition = (spaceSize * space.position.x);
     CGFloat yPosition = (spaceSize * space.position.y);
     
@@ -48,7 +71,8 @@
     
     if (self) {
         self.space = space;
-        self.scale = scale;
+        self.width = width;
+        self.height = height;
         self.size = spaceSize;
         
         [self.leftWall setWallVisible:self.space.leftSide];

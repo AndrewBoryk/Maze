@@ -10,13 +10,25 @@
 #import "WallView.h"
 #import "Space.h"
 
-@interface SpaceView : UIView
+@interface SpaceView : UIView {
+    /// Default size for a space
+    CGFloat defaultSpaceSize;
+}
+
+/// Shared instance, for default values pertaining to the spaceView
++ (id)sharedInstance;
+
+/// Default size for a space
+@property (nonatomic) CGFloat defaultSpaceSize;
 
 /// Space for view
 @property (strong, nonatomic) Space *space;
 
-/// Scale for board
-@property CGFloat scale;
+/// Width for board
+@property CGFloat width;
+
+/// Height for board
+@property CGFloat height;
 
 /// Size for space
 @property CGFloat size;
@@ -43,5 +55,5 @@
 @property BOOL isCompleted;
 
 /// Initialize space
-- (instancetype) initWithSpace:(Space *)space scale:(NSInteger)scale;
+- (instancetype) initWithSpace:(Space *)space width:(NSInteger)width height:(NSInteger) height;
 @end

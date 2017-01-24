@@ -14,11 +14,17 @@
 /// Array which holds coordinates for board
 @property (strong, nonatomic) NSMutableArray *boardArray;
 
-/// Scale for the board
-@property NSInteger scale;
+/// Width for the board
+@property NSInteger width;
+
+/// Height for the board
+@property NSInteger height;
 
 /// initialized board with scale
 - (instancetype) initWithScale: (NSInteger) scale;
+
+/// Initialize a board with a width and height
+- (instancetype) initWithWidth: (NSInteger) width height:(NSInteger) height;
 
 /// Returns the space at a point
 - (Space *) spaceForPoint: (CGPoint) point;

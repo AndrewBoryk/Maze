@@ -20,53 +20,71 @@
     return self;
 }
 
+- (instancetype) initWithWidth: (NSInteger) width height:(NSInteger) height {
+    self = [self init];
+    
+    if (self) {
+        self.width = width;
+        self.height = height;
+        
+        [self initBoardArray];
+    }
+    
+    return self;
+}
+
 - (instancetype) initWithScale: (NSInteger) scale {
     self = [self init];
     
     if (self) {
-        self.scale = scale;
+        self.width = scale;
+        self.height = scale;
         
-        for (int row = 0; row < scale; row++) {
-            NSMutableArray *rowArray = [[NSMutableArray alloc] init];
-            for (int collumn = 0; collumn < scale; collumn++) {
-                if (row == 0) {
-                    if (collumn == 0) {
-                        [rowArray addObject: [[Space alloc] initWithType:WallTypeLeftUp position:CGPointMake(collumn, row)]];
-                    }
-                    else if (collumn == (scale - 1)) {
-                        [rowArray addObject: [[Space alloc] initWithType:WallTypeRightUp position:CGPointMake(collumn, row)]];
-                    }
-                    else {
-                        [rowArray addObject: [[Space alloc] initWithType:WallTypeUp position:CGPointMake(collumn, row)]];
-                    }
-                }
-                else if (row == (scale - 1)) {
-                    if (collumn == 0) {
-                        [rowArray addObject: [[Space alloc] initWithType:WallTypeLeftDown position:CGPointMake(collumn, row)]];
-                    }
-                    else if (collumn == (scale - 1)) {
-                        [rowArray addObject: [[Space alloc] initWithType:WallTypeRightDown position:CGPointMake(collumn, row)]];
-                    }
-                    else {
-                        [rowArray addObject: [[Space alloc] initWithType:WallTypeDown position:CGPointMake(collumn, row)]];
-                    }
-                }
-                else if (collumn == 0) {
-                    [rowArray addObject: [[Space alloc] initWithType:WallTypeLeft position:CGPointMake(collumn, row)]];
-                }
-                else if (collumn == (scale - 1)) {
-                    [rowArray addObject: [[Space alloc] initWithType:WallTypeRight position:CGPointMake(collumn, row)]];
-                }
-                else {
-                    [rowArray addObject: [[Space alloc] initWithType:WallTypeNone position:CGPointMake(collumn, row)]];
-                }
-            }
-            
-            [self.boardArray addObject:rowArray];
-        }
+        [self initBoardArray];
     }
     
     return self;
+}
+
+- (void) initBoardArray {
+    for (int row = 0; row < self.height; row++) {
+        NSMutableArray *rowArray = [[NSMutableArray alloc] init];
+        for (int collumn = 0; collumn < self.width; collumn++) {
+            if (row == 0) {
+                if (collumn == 0) {
+                    [rowArray addObject: [[Space alloc] initWithType:WallTypeLeftUp position:CGPointMake(collumn, row)]];
+                }
+                else if (collumn == (self.width - 1)) {
+                    [rowArray addObject: [[Space alloc] initWithType:WallTypeRightUp position:CGPointMake(collumn, row)]];
+                }
+                else {
+                    [rowArray addObject: [[Space alloc] initWithType:WallTypeUp position:CGPointMake(collumn, row)]];
+                }
+            }
+            else if (row == (self.height - 1)) {
+                if (collumn == 0) {
+                    [rowArray addObject: [[Space alloc] initWithType:WallTypeLeftDown position:CGPointMake(collumn, row)]];
+                }
+                else if (collumn == (self.width - 1)) {
+                    [rowArray addObject: [[Space alloc] initWithType:WallTypeRightDown position:CGPointMake(collumn, row)]];
+                }
+                else {
+                    [rowArray addObject: [[Space alloc] initWithType:WallTypeDown position:CGPointMake(collumn, row)]];
+                }
+            }
+            else if (collumn == 0) {
+                [rowArray addObject: [[Space alloc] initWithType:WallTypeLeft position:CGPointMake(collumn, row)]];
+            }
+            else if (collumn == (self.width - 1)) {
+                [rowArray addObject: [[Space alloc] initWithType:WallTypeRight position:CGPointMake(collumn, row)]];
+            }
+            else {
+                [rowArray addObject: [[Space alloc] initWithType:WallTypeNone position:CGPointMake(collumn, row)]];
+            }
+        }
+        
+        [self.boardArray addObject:rowArray];
+    }
 }
 
 - (Space *) spaceForPoint: (CGPoint) point {
