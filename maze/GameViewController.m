@@ -171,7 +171,7 @@ int gcd (int a, int b){
     }
     
     
-    [UIView animateWithDuration:0.1f animations:^{
+    [UIView animateWithDuration:0.2f animations:^{
         [boardView movePlayer:player toPosition:newPosition];
     }];
     
@@ -186,12 +186,17 @@ int gcd (int a, int b){
 
 - (void) setScrollOffset {
     CGFloat newContentOffsetX = ([Player currentPlayer].position.x + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenWidth]/2.0f;
-    CGFloat newContentOffsetY = (([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize]) - [Utils screenHeight] + [[SpaceView sharedInstance] defaultSpaceSize];
+    CGFloat newContentOffsetY = ([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenHeight]/2.0f;
+//    CGFloat newContentOffsetY = (([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize]) - [Utils screenHeight] + [[SpaceView sharedInstance] defaultSpaceSize];
     CGFloat rightEdgeBuffer = (boardView.frame.size.width - [Utils screenWidth]);
+    CGFloat bottomEdgeBuffer = (boardView.frame.size.height - [Utils screenHeight]);
     
     //NSLog(@"Right edge buffer: %f", rightEdgeBuffer);
     if (newContentOffsetY < 0) {
         newContentOffsetY = 0;
+    }
+    else if (newContentOffsetY > bottomEdgeBuffer) {
+        newContentOffsetY = bottomEdgeBuffer;
     }
     
     if (newContentOffsetX < 0) {
