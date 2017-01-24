@@ -17,16 +17,13 @@
     [super viewDidLoad];
 
     // Load the SKScene from 'GameScene.sks'
-//    GameScene *scene = (GameScene *)[SKScene nodeWithFileNamed:@"GameScene"];
+    //GameScene *scene = (GameScene *)[SKScene nodeWithFileNamed:@"GameScene"];
     
     // Set the scale mode to scale to fit the window
-//    scene.scaleMode = SKSceneScaleModeAspectFill;
+    //scene.scaleMode = SKSceneScaleModeAspectFill;
     
-//    SKView *skView = (SKView *)self.view;
+    //SKView *skView = (SKView *)self.view;
     
-    self.view.backgroundColor = [Utils colorWithHexString:@"141414"];
-    
-    NSLog(@"Width %f Height %f", [Utils screenWidth], [Utils screenHeight]);
     [[SpaceView sharedInstance] setDefaultSpaceSize:30.0f];
     
     Board *testBoard = [[Board alloc] initWithWidth:([Utils screenWidth]/[[SpaceView sharedInstance] defaultSpaceSize]) height:([Utils screenHeight]/[[SpaceView sharedInstance] defaultSpaceSize])];
@@ -46,10 +43,10 @@
     }
     
     // Present the scene
-//    [skView presentScene:scene];
+    //[skView presentScene:scene];
     
-//    skView.showsFPS = YES;
-//    skView.showsNodeCount = YES;
+    //skView.showsFPS = YES;
+    //skView.showsNodeCount = YES;
 }
 
 - (BOOL)shouldAutorotate {
