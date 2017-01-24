@@ -24,7 +24,8 @@
     
     SKView *skView = (SKView *)self.view;
     
-    [[SpaceView sharedInstance] setDefaultSpaceSize:30.0f];
+    NSLog(@"Width %f Height %f", [Utils screenWidth], [Utils screenHeight]);
+    [[SpaceView sharedInstance] setDefaultSpaceSize:32.0f];
     
     Board *testBoard = [[Board alloc] initWithWidth:([Utils screenWidth]/[[SpaceView sharedInstance] defaultSpaceSize]) height:([Utils screenHeight]/[[SpaceView sharedInstance] defaultSpaceSize])];
     BoardView *boardView = [[BoardView alloc] initWithBoard:testBoard];
