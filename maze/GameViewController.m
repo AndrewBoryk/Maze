@@ -53,6 +53,8 @@
     
     testPlayer = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
     
+    [Player setCurrentPlayer:testPlayer];
+    
     [boardView addPlayer:testPlayer];
     
     boardView.center = self.view.center;
@@ -133,43 +135,42 @@ int gcd (int a, int b){
 }
 
 - (void) handleSwipeLeft: (UISwipeGestureRecognizer *)gesture {
-    CGPoint newPosition = testPlayer.position;
-    
-    newPosition.x--;
-    
-    [UIView animateWithDuration:0.1f animations:^{
-        [boardView movePlayer:testPlayer toPosition:newPosition];
-    }];
+    [self movePlayer:[Player currentPlayer] inDirection:DirectionLeft];
 }
 
 - (void) handleSwipeRight: (UISwipeGestureRecognizer *)gesture {
-    CGPoint newPosition = testPlayer.position;
-    
-    newPosition.x++;
-    
-    [UIView animateWithDuration:0.1f animations:^{
-        [boardView movePlayer:testPlayer toPosition:newPosition];
-    }];
+    [self movePlayer:[Player currentPlayer] inDirection:DirectionRight];
 }
 
 - (void) handleSwipeDown: (UISwipeGestureRecognizer *)gesture {
-    CGPoint newPosition = testPlayer.position;
-    
-    newPosition.y++;
-    
-    [UIView animateWithDuration:0.1f animations:^{
-        [boardView movePlayer:testPlayer toPosition:newPosition];
-    }];
+    [self movePlayer:[Player currentPlayer] inDirection:DirectionDown];
 }
 
 - (void) handleSwipeUp: (UISwipeGestureRecognizer *)gesture {
-    CGPoint newPosition = testPlayer.position;
-    newPosition.y--;
+    [self movePlayer:[Player currentPlayer] inDirection:DirectionUp];
+}
+
+- (void) movePlayer: (Player *) player inDirection: (DirectionType) direction {
+    CGPoint newPosition = player.position;
+    
+    
+    
+    if (direction == DirectionLeft) {
+        newPosition.x--;
+    }
+    else if (direction == DirectionRight) {
+        newPosition.x++;
+    }
+    else if (direction == DirectionUp) {
+        newPosition.y--;
+    }
+    else if (direction == DirectionDown) {
+        newPosition.y++;
+    }
     
     [UIView animateWithDuration:0.1f animations:^{
-        [boardView movePlayer:testPlayer toPosition:newPosition];
+        [boardView movePlayer:player toPosition:newPosition];
     }];
-    
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {

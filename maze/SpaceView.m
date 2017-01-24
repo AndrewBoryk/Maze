@@ -8,7 +8,11 @@
 
 #import "SpaceView.h"
 
-@implementation SpaceView
+@implementation SpaceView {
+    
+    /// Reconizes when a user taps on a space
+    UITapGestureRecognizer *tapRecognizer;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -82,6 +86,11 @@
             self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
         }
 
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        tapRecognizer.numberOfTapsRequired = 1;
+        tapRecognizer.numberOfTouchesRequired = 1;
+        tapRecognizer.delegate = self;
+        
 //        [self maskLayerMake:self.space.type];
     }
     
@@ -150,5 +159,13 @@
     maskLayer.frame = self.bounds;
     maskLayer.path = maskPath.CGPath;
     self.layer.mask = maskLayer;
+}
+
+- (void) handleTap: (UITapGestureRecognizer *) gesture {
+    
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 @end

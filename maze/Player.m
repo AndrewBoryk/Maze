@@ -10,6 +10,24 @@
 
 @implementation Player
 
++ (id)sharedInstance {
+    static Player *sharedMyInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMyInstance = [[self alloc] init];
+        
+    });
+    return sharedMyInstance;
+}
+
++ (void) setCurrentPlayer: (Player *) player{
+    [[Player sharedInstance] setCurrentPlayerInstance:player];
+}
+
++ (Player *) currentPlayer {
+    return [[Player sharedInstance] currentPlayerInstance];
+}
+     
 - (instancetype) initWithType:(PlayerType) type playerID:(NSString *)playerID withPosition: (CGPoint) position {
     self = [super init];
     

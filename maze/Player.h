@@ -7,8 +7,21 @@
 //
 
 #import "Maze-Prefix.pch"
+#import "Player.h"
 
 @interface Player : NSObject
+
+/// Current player instance
++ (id)sharedInstance;
+
+/// Set the current player
++ (void) setCurrentPlayer: (Player *) player;
+
+/// Return the current player
++ (Player *) currentPlayer;
+
+/// Current player
+@property (strong, nonatomic) Player *currentPlayerInstance;
 
 /// ID of player
 @property (strong, nonatomic) NSString *playerID;

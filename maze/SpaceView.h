@@ -9,7 +9,7 @@
 #import "Maze-Prefix.pch"
 #import "Space.h"
 
-@interface SpaceView : UIView {
+@interface SpaceView : UIView <UIGestureRecognizerDelegate> {
     /// Default size for a space
     CGFloat defaultSpaceSize;
 }
