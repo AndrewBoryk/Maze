@@ -137,6 +137,11 @@
                 if (space.position.x < rowArray.count) {
                     [rowArray setObject:space atIndexedSubscript:space.position.x];
                     [self.boardArray setObject:rowArray atIndexedSubscript:space.position.y];
+                    
+                    [self checkAdjustedObjective: space];
+                    
+                    
+                    
                     return YES;
                 }
             }
@@ -156,6 +161,7 @@
                 [rowArray setObject:space atIndexedSubscript:point.x];
                 [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
                 [[BoardView currentBoardView] replaceSpace:space];
+                [self checkAdjustedObjective: space];
                 return YES;
             }
         }
@@ -173,6 +179,7 @@
                 [rowArray setObject:space atIndexedSubscript:point.x];
                 [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
                 [[BoardView currentBoardView] replaceSpace:space];
+                [self checkAdjustedObjective: space];
                 return YES;
             }
         }
@@ -212,5 +219,43 @@
 
 + (Board *) currentBoard {
     return [[Board sharedInstance] currentBoardInstance];
+}
+
+- (void) checkAdjustedObjective: (Space *) space {
+    if (space.isFlag) {
+        if ([Utils notNull:[BoardView currentBoardView]]) {
+            if ([Utils notNull:[[BoardView currentBoardView] flagOne]]) {
+                if ([Utils notNull:[[[BoardView currentBoardView] flagOne] space]]) {
+                    if ([[[[BoardView currentBoardView] flagOne] space] position].x == space.position.x && [[[[BoardView currentBoardView] flagOne] space] position].y == space.position.y) {
+                        if ([[[BoardView currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
+                            [[[BoardView currentBoardView] delegate] adjustedObjective:1 withSpaceView:[[BoardView currentBoardView] flagOne]];
+                        }
+                    }
+                }
+            }
+            
+            if ([Utils notNull:[[BoardView currentBoardView] flagTwo]]) {
+                if ([Utils notNull:[[[BoardView currentBoardView] flagTwo] space]]) {
+                    if ([[[[BoardView currentBoardView] flagTwo] space] position].x == space.position.x && [[[[BoardView currentBoardView] flagTwo] space] position].y == space.position.y) {
+                        if ([[[BoardView currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
+                            [[[BoardView currentBoardView] delegate] adjustedObjective:2 withSpaceView:[[BoardView currentBoardView] flagTwo]];
+                        }
+                    }
+                }
+            }
+            
+            
+            if ([Utils notNull:[[BoardView currentBoardView] flagThree]]) {
+                if ([Utils notNull:[[[BoardView currentBoardView] flagThree] space]]) {
+                    if ([[[[BoardView currentBoardView] flagThree] space] position].x == space.position.x && [[[[BoardView currentBoardView] flagThree] space] position].y == space.position.y) {
+                        if ([[[BoardView currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
+                            [[[BoardView currentBoardView] delegate] adjustedObjective:3 withSpaceView:[[BoardView currentBoardView] flagThree]];
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 }
 @end

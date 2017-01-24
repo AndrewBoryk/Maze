@@ -18,6 +18,9 @@
 /// Shared instance, for default values pertaining to the spaceView
 + (id)sharedInstance;
 
+/// Shows the percentage that the space is captured
+@property (strong, nonatomic) CAShapeLayer *percentageLayer;
+
 /// Default size for a space
 @property (nonatomic) CGFloat defaultSpaceSize;
 
@@ -47,4 +50,7 @@
 
 /// Adjust the space
 + (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType withStrength: (float) strength;
+
+/// Adjusts the percentage that the space is captured
++ (void) adjustSpacePercentage: (SpaceView *) spaceView;
 @end

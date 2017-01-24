@@ -11,7 +11,11 @@
 @class SpaceView;
 #import "Player.h"
 
+@protocol BoardViewDelegate;
+
 @interface BoardView : UIView
+
+@property (weak, nonatomic) id<BoardViewDelegate> delegate;
 
 /// Current boardView instance
 + (id)sharedInstance;
@@ -63,4 +67,15 @@
 
 /// Replace a space on the board
 - (void) replaceSpace: (Space *)space;
+
+
+@end
+
+@protocol BoardViewDelegate <NSObject>
+
+@optional
+
+- (void) adjustedObjective: (NSInteger) objectiveNumber withSpaceView: (SpaceView *) spaceView;
+
+
 @end

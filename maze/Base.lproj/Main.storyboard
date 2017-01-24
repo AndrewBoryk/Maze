@@ -37,19 +37,103 @@
                                     <action selector="switchPlayerAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="EQW-Sl-dzz"/>
                                 </connections>
                             </button>
+                            <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DLh-nB-wyB">
+                                <rect key="frame" x="327" y="571" width="36" height="36"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yO-zP-5Mf">
+                                        <rect key="frame" x="0.0" y="-0.5" width="36" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="8yO-zP-5Mf" firstAttribute="centerY" secondItem="DLh-nB-wyB" secondAttribute="centerY" id="3v5-VU-iwq"/>
+                                    <constraint firstAttribute="width" constant="36" id="WBm-ZD-30I"/>
+                                    <constraint firstItem="8yO-zP-5Mf" firstAttribute="centerX" secondItem="DLh-nB-wyB" secondAttribute="centerX" id="g2O-pR-gi2"/>
+                                    <constraint firstItem="8yO-zP-5Mf" firstAttribute="width" secondItem="DLh-nB-wyB" secondAttribute="width" id="gVi-Nj-Dy2"/>
+                                    <constraint firstAttribute="height" constant="36" id="lWf-Wf-Ne6"/>
+                                    <constraint firstItem="8yO-zP-5Mf" firstAttribute="height" secondItem="DLh-nB-wyB" secondAttribute="height" id="tiu-ky-jai"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tg1-3L-2ye">
+                                <rect key="frame" x="327" y="523" width="36" height="36"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmi-dw-Xs1">
+                                        <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="bmi-dw-Xs1" firstAttribute="centerX" secondItem="Tg1-3L-2ye" secondAttribute="centerX" id="58V-lc-mbh"/>
+                                    <constraint firstItem="bmi-dw-Xs1" firstAttribute="height" secondItem="Tg1-3L-2ye" secondAttribute="height" id="9d4-FZ-aQW"/>
+                                    <constraint firstAttribute="height" constant="36" id="N6e-Y3-jDC"/>
+                                    <constraint firstItem="bmi-dw-Xs1" firstAttribute="centerY" secondItem="Tg1-3L-2ye" secondAttribute="centerY" id="PW1-iO-s4H"/>
+                                    <constraint firstAttribute="width" constant="36" id="qrP-S4-OnR"/>
+                                    <constraint firstItem="bmi-dw-Xs1" firstAttribute="width" secondItem="Tg1-3L-2ye" secondAttribute="width" id="xAH-HG-yxh"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NF6-Yd-LVU">
+                                <rect key="frame" x="327" y="475" width="36" height="36"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2F-35-cLQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="s2F-35-cLQ" firstAttribute="centerX" secondItem="NF6-Yd-LVU" secondAttribute="centerX" id="7Sz-nH-bse"/>
+                                    <constraint firstItem="s2F-35-cLQ" firstAttribute="centerY" secondItem="NF6-Yd-LVU" secondAttribute="centerY" id="7X5-Zv-hlx"/>
+                                    <constraint firstItem="s2F-35-cLQ" firstAttribute="width" secondItem="NF6-Yd-LVU" secondAttribute="width" id="M2A-Bv-aHR"/>
+                                    <constraint firstAttribute="height" constant="36" id="OPY-Hk-8xw"/>
+                                    <constraint firstItem="s2F-35-cLQ" firstAttribute="height" secondItem="NF6-Yd-LVU" secondAttribute="height" id="Yzn-8y-Z3L"/>
+                                    <constraint firstAttribute="width" constant="36" id="xas-6J-Hqj"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="dma-Dj-8xr" firstAttribute="top" secondItem="DLh-nB-wyB" secondAttribute="bottom" constant="12" id="CTw-Pr-nVK"/>
                             <constraint firstItem="z1Z-oj-IFg" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" id="FPz-d5-Yxq"/>
                             <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="dma-Dj-8xr" secondAttribute="bottom" constant="12" id="HNP-e4-G7K"/>
+                            <constraint firstItem="Tg1-3L-2ye" firstAttribute="trailing" secondItem="DLh-nB-wyB" secondAttribute="trailing" id="K7R-GE-Ast"/>
+                            <constraint firstItem="Tg1-3L-2ye" firstAttribute="top" secondItem="NF6-Yd-LVU" secondAttribute="bottom" constant="12" id="Ol2-Ci-Gt4"/>
                             <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="z1Z-oj-IFg" secondAttribute="bottom" id="XT2-WS-dTD"/>
                             <constraint firstAttribute="trailing" secondItem="dma-Dj-8xr" secondAttribute="trailing" constant="12" id="doQ-Zi-6v2"/>
                             <constraint firstItem="z1Z-oj-IFg" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="hlv-5P-ZXx"/>
+                            <constraint firstAttribute="trailing" secondItem="DLh-nB-wyB" secondAttribute="trailing" constant="12" id="iUZ-Dp-N2n"/>
+                            <constraint firstItem="DLh-nB-wyB" firstAttribute="top" secondItem="Tg1-3L-2ye" secondAttribute="bottom" constant="12" id="kRt-Xq-WqW"/>
                             <constraint firstAttribute="trailing" secondItem="z1Z-oj-IFg" secondAttribute="trailing" id="rw7-z2-Bdk"/>
+                            <constraint firstItem="NF6-Yd-LVU" firstAttribute="trailing" secondItem="Tg1-3L-2ye" secondAttribute="trailing" id="x6L-i8-8kR"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="objectiveOneView" destination="DLh-nB-wyB" id="Ger-b1-0b3"/>
+                        <outlet property="objectiveThreeView" destination="NF6-Yd-LVU" id="DDZ-0h-nTI"/>
+                        <outlet property="objectiveTwoView" destination="Tg1-3L-2ye" id="Zt4-fn-bgi"/>
                         <outlet property="scrollView" destination="z1Z-oj-IFg" id="1VM-O1-Oos"/>
                         <outlet property="switchPlayerButton" destination="dma-Dj-8xr" id="B46-ko-jRv"/>
                     </connections>

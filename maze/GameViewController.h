@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <SpriteKit/SpriteKit.h>
 #import <GameplayKit/GameplayKit.h>
+#import "BoardView.h"
 
-@interface GameViewController : UIViewController <UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface GameViewController : UIViewController <UIGestureRecognizerDelegate, UIScrollViewDelegate, BoardViewDelegate>
 
 /// Scroll view for board
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -20,5 +21,14 @@
 
 /// Switch players during testing
 - (IBAction)switchPlayerAction:(id)sender;
+
+/// View which shows progress of capturing objective one
+@property (strong, nonatomic) IBOutlet UIView *objectiveOneView;
+
+/// View which shows progress of capturing objective two
+@property (strong, nonatomic) IBOutlet UIView *objectiveTwoView;
+
+/// View which shows progress of capturing objective three
+@property (strong, nonatomic) IBOutlet UIView *objectiveThreeView;
 
 @end

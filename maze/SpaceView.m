@@ -9,6 +9,8 @@
 #import "SpaceView.h"
 
 
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 @implementation SpaceView {
     
     /// Reconizes when a user taps on a space
@@ -92,7 +94,7 @@
         else if (self.space.type == SpaceTypeEmpty) {
             if (self.space.friendlyPercentage > 0) {
                 
-                self.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:self.space.friendlyPercentage];
+                self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
                 self.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
                 if (self.space.friendlyPercentage == 1) {
                     self.space.type = SpaceTypeFriendly;
@@ -104,7 +106,7 @@
             }
             else if (self.space.enemyPercentage > 0) {
                 
-                self.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:self.space.enemyPercentage];
+                self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
                 self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
                 if (self.space.enemyPercentage == 1) {
                     self.space.type = SpaceTypeEnemy;
@@ -120,7 +122,7 @@
             }
         }
         
-        
+//        [SpaceView adjustSpacePercentage:self];
 
         tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tapRecognizer.numberOfTapsRequired = 1;
@@ -230,6 +232,8 @@
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
                 spaceView.space.type = SpaceTypeEmpty;
             }
+            
+//            [SpaceView adjustSpacePercentage: spaceView];
         }
     }
     
@@ -248,6 +252,48 @@
     
 }
 
++ (void) adjustSpacePercentage: (SpaceView *) spaceView {
+    UIBezierPath *peekPath = [UIBezierPath bezierPath];
+    [peekPath moveToPoint:CGPointMake(24, 24)];
+    
+    float startAngle = spaceView.space.friendlyPercentage * 360.0f;
+    UIColor *fillColor = [Utils colorWithHexString:@"ecf0f1"];
+
+    if (spaceView.space.friendlyPercentage > 0) {
+        fillColor = [Utils colorWithHexString:@"3498db"];
+        startAngle = spaceView.space.friendlyPercentage;
+        
+    }
+    else if (spaceView.space.enemyPercentage > 0) {
+        fillColor = [Utils colorWithHexString:@"e74c3c"];
+        startAngle = spaceView.space.enemyPercentage;
+    }
+
+    
+    [peekPath addArcWithCenter:CGPointMake(24, 24) radius:12 startAngle:DEGREES_TO_RADIANS(startAngle) endAngle:DEGREES_TO_RADIANS(360.0f) clockwise:YES];
+    spaceView.percentageLayer = [[CAShapeLayer alloc] init];
+    spaceView.percentageLayer.fillColor = fillColor.CGColor;
+    spaceView.percentageLayer.path = peekPath.CGPath;
+    spaceView.percentageLayer.shadowColor = [UIColor blackColor].CGColor;
+    spaceView.percentageLayer.shadowOffset = CGSizeMake(0, 0);
+    spaceView.percentageLayer.shadowOpacity = 1.0f;
+    spaceView.percentageLayer.shadowRadius = 1.0f;
+    
+    if (startAngle == 0 || spaceView.space.type == SpaceTypeWall) {
+        spaceView.percentageLayer.hidden = YES;
+        if ([spaceView.layer.sublayers containsObject:spaceView.percentageLayer]) {
+            [spaceView.percentageLayer removeFromSuperlayer];
+        }
+    }
+    else {
+        spaceView.percentageLayer.hidden = NO;
+        if (![spaceView.layer.sublayers containsObject:spaceView.percentageLayer]) {
+            [spaceView.layer addSublayer:spaceView.percentageLayer];
+        }
+    }
+    
+    
+}
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }

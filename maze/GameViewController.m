@@ -9,11 +9,11 @@
 #import "GameViewController.h"
 #import "GameScene.h"
 #import "Board.h"
-#import "BoardView.h"
+
 #import "SpaceView.h"
 #import <CoreMotion/CoreMotion.h>
 
-@implementation GameViewController {
+@implementation GameViewController  {
     Player *testPlayerBlue;
     
     Player *testPlayerRed;
@@ -62,6 +62,8 @@
     [self setSwitchBackground];
     
     BoardView *mainBoardView = [[BoardView alloc] initWithBoard:mainBoard];
+    mainBoardView.delegate = self;
+    
     [BoardView setCurrentBoardView:mainBoardView];
     
     Space *friendlyHome = [[Space alloc] initWithType:SpaceTypeFriendly position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
@@ -285,4 +287,15 @@ int gcd (int a, int b){
     }
 }
 
+- (void) adjustedObjective:(NSInteger)objectiveNumber withSpaceView:(SpaceView *)spaceView {
+    if (objectiveNumber == 1) {
+        self.objectiveOneView.backgroundColor = spaceView.backgroundColor;
+    }
+    else if (objectiveNumber == 2) {
+        self.objectiveTwoView.backgroundColor = spaceView.backgroundColor;
+    }
+    else if (objectiveNumber == 3) {
+        self.objectiveThreeView.backgroundColor = spaceView.backgroundColor;
+    }
+}
 @end
