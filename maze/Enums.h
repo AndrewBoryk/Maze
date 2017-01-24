@@ -42,6 +42,11 @@ typedef NS_ENUM(NSInteger, SpaceType) {
     SpaceTypeEnemyHome,  // 8
 };
 
+typedef NS_ENUM(NSInteger, PlayerType) {
+    PlayerTypeEnemy, // 0
+    PlayerTypeFriendly, // 1
+};
+
 /// Direction types
 typedef NS_ENUM(NSInteger, DirectionType) {
     DirectionLeft,

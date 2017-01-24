@@ -7,6 +7,7 @@
 //
 
 #import "BoardView.h"
+#import "PlayerView.h"
 
 @implementation BoardView
 
@@ -58,4 +59,118 @@
     return self;
 }
 
+- (void) addPlayer:(Player *)player {
+    if ([Utils notNull:self.board] && [Utils notNull:player]) {
+        if ([Utils notNull:player.playerID]) {
+            if (![Utils notNull:self.board.playerArray]) {
+                self.board.playerArray = [[NSMutableArray alloc] init];
+            }
+            
+            BOOL found = NO;
+            for (Player *tempPlayer in self.board.playerArray) {
+                if ([Utils notNull:tempPlayer.playerID]) {
+                    if ([tempPlayer.playerID isEqualToString:player.playerID]) {
+                        found = YES;
+                        break;
+                    }
+                }
+            }
+            
+            if (!found) {
+                [self.board.playerArray addObject:player];
+                PlayerView *playerView = [[PlayerView alloc] initWithPlayer:player inBoard:self];
+                [self.board.playerViewArray addObject:playerView];
+                [self addSubview:playerView];
+            }
+        }
+        
+    }
+}
+
+- (void) removePlayer: (NSString *) playerID {
+    if ([Utils notNull:self.board] && [Utils notNull:playerID]) {
+        if (![Utils notNull:self.board.playerViewArray]) {
+            self.board.playerViewArray = [[NSMutableArray alloc] init];
+        }
+        
+        if (![Utils notNull:self.board.playerArray]) {
+            self.board.playerArray = [[NSMutableArray alloc] init];
+        }
+        else {
+            for (Player *tempPlayer in self.board.playerArray) {
+                if ([Utils notNull:tempPlayer.playerID]) {
+                    if ([tempPlayer.playerID isEqualToString:playerID]) {
+                        [self.board.playerArray removeObject:tempPlayer];
+                        break;
+                    }
+                }
+            }
+            
+            for (PlayerView *tempPlayerView in self.board.playerViewArray) {
+                if ([Utils notNull:tempPlayerView.player]) {
+                    if ([Utils notNull:tempPlayerView.player.playerID]) {
+                        if ([tempPlayerView.player.playerID isEqualToString:playerID]) {
+                            [self.board.playerViewArray removeObject:tempPlayerView];
+                            [tempPlayerView removeFromSuperview];
+                            
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void) movePlayer:(Player *)player toPosition:(CGPoint)position {
+    if ([Utils notNull:self.board] && [Utils notNull:player.playerID]) {
+        if (![Utils notNull:self.board.playerArray]) {
+            self.board.playerArray = [[NSMutableArray alloc] init];
+        }
+        
+        if (![Utils notNull:self.board.playerViewArray]) {
+            self.board.playerViewArray = [[NSMutableArray alloc] init];
+        }
+        
+        if (position.x < self.board.width && position.y < self.board.height) {
+            if ([Space canPass:position inBoard:self.board playerType:player.type]) {
+                for (Player *tempPlayer in self.board.playerArray) {
+                    if ([Utils notNull:tempPlayer.playerID]) {
+                        if ([tempPlayer.playerID isEqualToString:player.playerID]) {
+                            tempPlayer.position = position;
+                            
+                            for (PlayerView *tempPlayerView in self.board.playerViewArray) {
+                                if ([Utils notNull:tempPlayerView.player]) {
+                                    if ([Utils notNull:tempPlayerView.player.playerID]) {
+                                        if ([tempPlayerView.player.playerID isEqualToString:tempPlayer.playerID]) {
+                                            tempPlayerView.center = [[self spaceViewForPoint:tempPlayer.position] center];
+                                            
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            break;
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+    }
+}
+
+
+- (SpaceView *) spaceViewForPoint: (CGPoint) point {
+    
+    if ([Utils notNull:self.spaces]) {
+        NSString *spaceKey = [NSString stringWithFormat:@"%i:%i", (int)point.x, (int)point.y];
+        
+        return [self.spaces objectForKey:spaceKey];
+    }
+    
+    return nil;
+}
 @end

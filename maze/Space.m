@@ -7,6 +7,7 @@
 //
 
 #import "Space.h"
+#import "Board.h"
 
 @implementation Space
 
@@ -33,17 +34,22 @@
     return self;
 }
 
-+ (BOOL) canPass:(Space *)space direction:(DirectionType)direction alliance: (BOOL) friendly {
-    if (friendly) {
-        if (space.type == SpaceTypeFriendlyHome || space.type == SpaceTypeCapturedFriendly || space.type == SpaceTypeCapturedFriendlyFlag) {
-            return YES;
++ (BOOL) canPass:(CGPoint )point inBoard: (Board *)board playerType:(PlayerType)playerType {
+    
+    Space *space = [board spaceForPoint:point];
+    if ([Utils notNull:space]) {
+        if (playerType == PlayerTypeFriendly) {
+            if (space.type == SpaceTypeFriendlyHome || space.type == SpaceTypeCapturedFriendly || space.type == SpaceTypeCapturedFriendlyFlag || space.type == SpaceTypeEmpty) {
+                return YES;
+            }
+        }
+        else if (playerType == PlayerTypeEnemy) {
+            if (space.type == SpaceTypeEnemyHome || space.type == SpaceTypeCapturedEnemy || space.type == SpaceTypeCapturedEnemyFlag || space.type == SpaceTypeEmpty) {
+                return YES;
+            }
         }
     }
-    else {
-        if (space.type == SpaceTypeEnemyHome || space.type == SpaceTypeCapturedEnemy || space.type == SpaceTypeCapturedEnemyFlag) {
-            return YES;
-        }
-    }
+    
     
    
     

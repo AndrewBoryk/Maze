@@ -11,7 +11,25 @@
 #import "Board.h"
 #import "BoardView.h"
 
-@implementation GameViewController
+@implementation GameViewController {
+    Player *testPlayer;
+    
+    BoardView *boardView;
+    
+    Board *testBoard;
+    
+    /// Recognizes swipes on board left
+    UISwipeGestureRecognizer *swipeRecognizerLeft;
+    
+    /// Recognizes swipes on board right
+    UISwipeGestureRecognizer *swipeRecognizerRight;
+    
+    /// Recognizes swipes on board up
+    UISwipeGestureRecognizer *swipeRecognizerUp;
+    
+    /// Recognizes swipes on board down
+    UISwipeGestureRecognizer *swipeRecognizerDown;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,12 +44,17 @@
     
     [[SpaceView sharedInstance] setDefaultSpaceSize:40.0f];
     
-    Board *testBoard = [[Board alloc] initWithWidth:([Utils screenWidth]/[[SpaceView sharedInstance] defaultSpaceSize]) height:([Utils screenHeight]/[[SpaceView sharedInstance] defaultSpaceSize])];
+    testBoard = [[Board alloc] initWithWidth:([Utils screenWidth]/[[SpaceView sharedInstance] defaultSpaceSize]) height:([Utils screenHeight]/[[SpaceView sharedInstance] defaultSpaceSize])];
     
     [testBoard replacePoint:CGPointMake(4, 1) withType:SpaceTypeEnemyHome];
     [testBoard replacePoint:CGPointMake(4, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
     
-    BoardView *boardView = [[BoardView alloc] initWithBoard:testBoard];
+    boardView = [[BoardView alloc] initWithBoard:testBoard];
+    
+    testPlayer = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(4, testBoard.height - 2)];
+    
+    [boardView addPlayer:testPlayer];
+    
     boardView.center = self.view.center;
     
     [self.view addSubview:boardView];
@@ -45,12 +68,42 @@
         
         [Utils printString:rowString];
     }
+    boardView.userInteractionEnabled = NO;
+    
+    
+    swipeRecognizerLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
+    swipeRecognizerLeft.direction = (UISwipeGestureRecognizerDirectionLeft);
+    swipeRecognizerLeft.delegate = self;
+    
+    swipeRecognizerRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeRight:)];
+    swipeRecognizerRight.direction = (UISwipeGestureRecognizerDirectionRight);
+    swipeRecognizerRight.delegate = self;
+    
+    swipeRecognizerDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeDown:)];
+    swipeRecognizerDown.direction = (UISwipeGestureRecognizerDirectionDown);
+    swipeRecognizerDown.delegate = self;
+    
+    swipeRecognizerUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeUp:)];
+    swipeRecognizerUp.direction = (UISwipeGestureRecognizerDirectionUp);
+    swipeRecognizerUp.delegate = self;
+    
+    
+    [self.view addGestureRecognizer:swipeRecognizerLeft];
+    [self.view addGestureRecognizer:swipeRecognizerRight];
+    [self.view addGestureRecognizer:swipeRecognizerDown];
+    [self.view addGestureRecognizer:swipeRecognizerUp];
     
     // Present the scene
     //[skView presentScene:scene];
     
     //skView.showsFPS = YES;
     //skView.showsNodeCount = YES;
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [boardView movePlayer:testPlayer toPosition:CGPointMake(4, testBoard.height - 2)];
 }
 
 - (BOOL)shouldAutorotate {
@@ -80,6 +133,50 @@ int gcd (int a, int b){
         c = a; a = b%a; b = c;
     }
     return b;
+}
+
+- (void) handleSwipeLeft: (UISwipeGestureRecognizer *)gesture {
+    CGPoint newPosition = testPlayer.position;
+    
+    newPosition.x--;
+    
+    [UIView animateWithDuration:0.1f animations:^{
+        [boardView movePlayer:testPlayer toPosition:newPosition];
+    }];
+}
+
+- (void) handleSwipeRight: (UISwipeGestureRecognizer *)gesture {
+    CGPoint newPosition = testPlayer.position;
+    
+    newPosition.x++;
+    
+    [UIView animateWithDuration:0.1f animations:^{
+        [boardView movePlayer:testPlayer toPosition:newPosition];
+    }];
+}
+
+- (void) handleSwipeDown: (UISwipeGestureRecognizer *)gesture {
+    CGPoint newPosition = testPlayer.position;
+    
+    newPosition.y++;
+    
+    [UIView animateWithDuration:0.1f animations:^{
+        [boardView movePlayer:testPlayer toPosition:newPosition];
+    }];
+}
+
+- (void) handleSwipeUp: (UISwipeGestureRecognizer *)gesture {
+    CGPoint newPosition = testPlayer.position;
+    newPosition.y--;
+    
+    [UIView animateWithDuration:0.1f animations:^{
+        [boardView movePlayer:testPlayer toPosition:newPosition];
+    }];
+    
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import "Maze-Prefix.pch"
 
+@class Board;
+
 @interface Space : NSObject
 
 /// Type of space
@@ -17,7 +19,7 @@
 @property CGPoint position;
 
 /// Determines if player can pass through wall going in a direction
-+ (BOOL) canPass:(Space *)space direction:(DirectionType)direction alliance:(BOOL)friendly;
++ (BOOL) canPass:(CGPoint )point inBoard: (Board *)board playerType: (PlayerType) playerType;
 
 /// Inits a space for type
 - (instancetype) initWithType: (SpaceType) type position: (CGPoint)position;

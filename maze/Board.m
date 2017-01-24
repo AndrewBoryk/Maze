@@ -15,6 +15,8 @@
     
     if (self) {
         self.boardArray = [[NSMutableArray alloc] init];
+        self.playerArray = [[NSMutableArray alloc] init];
+        self.playerViewArray = [[NSMutableArray alloc] init];
     }
     
     return self;

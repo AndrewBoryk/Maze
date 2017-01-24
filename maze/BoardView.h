@@ -9,6 +9,7 @@
 #import "Maze-Prefix.pch"
 #import "Board.h"
 #import "SpaceView.h"
+#import "Player.h"
 
 @interface BoardView : UIView
 
@@ -20,4 +21,16 @@
 
 /// Initializes view wiht board
 - (instancetype) initWithBoard: (Board *) board;
+
+/// Adds a player to the board
+- (void) addPlayer: (Player *) player;
+
+/// Moves a player to a position
+- (void) movePlayer: (Player *) player toPosition: (CGPoint) position;
+
+/// Remove a player from the board
+- (void) removePlayer: (Player *) player;
+
+/// Returns a spaceView for a given point
+- (SpaceView *) spaceViewForPoint: (CGPoint) point;
 @end

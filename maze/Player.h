@@ -10,16 +10,16 @@
 
 @interface Player : NSObject
 
-/// Direction that player is heading
-@property DirectionType direction;
+/// ID of player
+@property (strong, nonatomic) NSString *playerID;
 
 /// Position of player
 @property CGPoint position;
 
-/// Speed that the player is traveling
-@property float speed;
+/// Type of player
+@property PlayerType type;
 
-/// Determines if player is a moving ghost
-@property BOOL isGhost;
+/// Initializes a player
+- (instancetype) initWithType:(PlayerType) type playerID:(NSString *)playerID withPosition: (CGPoint) position;
 
 @end

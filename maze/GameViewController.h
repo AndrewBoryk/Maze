@@ -10,6 +10,6 @@
 #import <SpriteKit/SpriteKit.h>
 #import <GameplayKit/GameplayKit.h>
 
-@interface GameViewController : UIViewController
+@interface GameViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @end

@@ -69,10 +69,7 @@
         self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
         self.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
         
-        if (self.space.type == SpaceTypeEmpty) {
-            
-        }
-        else if (self.space.type == SpaceTypeWall) {
+        if (self.space.type == SpaceTypeWall) {
             self.backgroundColor = [Utils colorWithHexString:@"141414"];
             self.layer.borderColor = [Utils colorWithHexString:@"141414"].CGColor;
         }

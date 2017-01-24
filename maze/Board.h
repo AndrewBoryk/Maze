@@ -20,6 +20,12 @@
 /// Height for the board
 @property NSInteger height;
 
+/// Dictionary containing players
+@property NSMutableArray *playerArray;
+
+/// Dictionary containing players
+@property NSMutableArray *playerViewArray;
+
 /// initialized board with scale
 - (instancetype) initWithScale: (NSInteger) scale;
 
