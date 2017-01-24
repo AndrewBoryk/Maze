@@ -7,7 +7,10 @@
 //
 
 #import "SpaceView.h"
-
+#import "Space.h"
+#import "Player.h"
+#import "BoardView.h"
+#import "Board.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
@@ -79,28 +82,28 @@
         self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
         self.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
         
-        if (self.space.type == SpaceTypeWall) {
+        if (self.space.type == ItemTypeWall) {
             self.backgroundColor = [Utils colorWithHexString:@"141414"];
             self.layer.borderColor = [Utils colorWithHexString:@"141414"].CGColor;
         }
-        else if (self.space.type == SpaceTypeFriendly) {
+        else if (self.space.type == ItemTypeFriendly) {
             self.backgroundColor = [Utils colorWithHexString:@"3498db"];
             self.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
         }
-        else if (self.space.type == SpaceTypeEnemy) {
+        else if (self.space.type == ItemTypeEnemy) {
             self.backgroundColor = [Utils colorWithHexString:@"e74c3c"];
             self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
         }
-        else if (self.space.type == SpaceTypeEmpty) {
+        else if (self.space.type == ItemTypeEmpty) {
             if (self.space.friendlyPercentage > 0) {
                 
                 self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
                 self.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
                 if (self.space.friendlyPercentage == 1) {
-                    self.space.type = SpaceTypeFriendly;
+                    self.space.type = ItemTypeFriendly;
                 }
                 else {
-                    self.space.type = SpaceTypeEmpty;
+                    self.space.type = ItemTypeEmpty;
                 }
                 
             }
@@ -109,22 +112,22 @@
                 self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
                 self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
                 if (self.space.enemyPercentage == 1) {
-                    self.space.type = SpaceTypeEnemy;
+                    self.space.type = ItemTypeEnemy;
                 }
                 else {
-                    self.space.type = SpaceTypeEmpty;
+                    self.space.type = ItemTypeEmpty;
                 }
             }
             else {
                 self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
                 self.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
-                self.space.type = SpaceTypeEmpty;
+                self.space.type = ItemTypeEmpty;
             }
         }
         
 //        [SpaceView adjustSpacePercentage:self];
 
-        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleInteraction:)];
         tapRecognizer.numberOfTapsRequired = 1;
         tapRecognizer.numberOfTouchesRequired = 1;
         tapRecognizer.delegate = self;
@@ -146,8 +149,8 @@
 }
 
 
-- (void) handleTap: (UITapGestureRecognizer *) gesture {
-    if (self.space.type != SpaceTypeWall && !self.space.isBase) {
+- (void) handleInteraction: (UITapGestureRecognizer *) gesture {
+    if (self.space.type != ItemTypeWall && !self.space.isBase) {
         double absoluteX = fabs((self.space.position.x - [Player currentPlayer].position.x));
         double absoluteY = fabs((self.space.position.y - [Player currentPlayer].position.y));
         
@@ -168,12 +171,19 @@
     
 }
 
-+ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType withStrength: (float) strength {
++ (void) handleInteractionWithSpace: (Space *)space andPlayer: (Player *)player andStrength:(float)strength {
+    if (space.type != ItemTypeWall) {
+        [SpaceView adjustSpaceAtPosition:space.position forType:player.type withStrength:strength];
+    }
+    
+}
+
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (ItemType) playerType withStrength: (float) strength {
     SpaceView *spaceView = [[BoardView currentBoardView] spaceViewForPoint:position];
     
     if ([Utils notNull:spaceView]) {
         if ([Utils notNull:spaceView.space]) {
-            if (playerType == PlayerTypeFriendly) {
+            if (playerType == ItemTypeFriendly) {
                 if (spaceView.space.enemyPercentage > 0) {
                     spaceView.space.enemyPercentage-= (0.2f * strength);
                 }
@@ -181,7 +191,7 @@
                     spaceView.space.friendlyPercentage+= (0.2f * strength);
                 }
             }
-            else if (playerType == PlayerTypeEnemy) {
+            else if (playerType == ItemTypeEnemy) {
                 if (spaceView.space.friendlyPercentage > 0) {
                     spaceView.space.friendlyPercentage-= (0.2f * strength);
                 }
@@ -209,10 +219,10 @@
                 spaceView.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
                 if (spaceView.space.friendlyPercentage == 1) {
-                    spaceView.space.type = SpaceTypeFriendly;
+                    spaceView.space.type = ItemTypeFriendly;
                 }
                 else {
-                    spaceView.space.type = SpaceTypeEmpty;
+                    spaceView.space.type = ItemTypeEmpty;
                 }
                 
             }
@@ -221,16 +231,16 @@
                 spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.enemyPercentage];
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
                 if (spaceView.space.enemyPercentage == 1) {
-                    spaceView.space.type = SpaceTypeEnemy;
+                    spaceView.space.type = ItemTypeEnemy;
                 }
                 else {
-                    spaceView.space.type = SpaceTypeEmpty;
+                    spaceView.space.type = ItemTypeEmpty;
                 }
             }
             else {
                 spaceView.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
-                spaceView.space.type = SpaceTypeEmpty;
+                spaceView.space.type = ItemTypeEmpty;
             }
             
 //            [SpaceView adjustSpacePercentage: spaceView];
@@ -279,7 +289,7 @@
     spaceView.percentageLayer.shadowOpacity = 1.0f;
     spaceView.percentageLayer.shadowRadius = 1.0f;
     
-    if (startAngle == 0 || spaceView.space.type == SpaceTypeWall) {
+    if (startAngle == 0 || spaceView.space.type == ItemTypeWall) {
         spaceView.percentageLayer.hidden = YES;
         if ([spaceView.layer.sublayers containsObject:spaceView.percentageLayer]) {
             [spaceView.percentageLayer removeFromSuperlayer];

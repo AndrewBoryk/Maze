@@ -9,6 +9,7 @@
 #import "BoardView.h"
 #import "PlayerView.h"
 #import "SpaceView.h"
+#import "Board.h"
 
 @implementation BoardView
 

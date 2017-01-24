@@ -54,10 +54,10 @@
     
     [Board setCurrentBoard:mainBoard];
     
-    testPlayerBlue = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
+    testPlayerBlue = [[Player alloc] initWithType:ItemTypeFriendly playerID:@"12345" withPosition:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
     testPlayerBlue.dataSource = self;
     
-    testPlayerRed = [[Player alloc] initWithType:PlayerTypeEnemy playerID:@"12346" withPosition:CGPointMake([Board currentBoard].width / 2, 1)];
+    testPlayerRed = [[Player alloc] initWithType:ItemTypeEnemy playerID:@"12346" withPosition:CGPointMake([Board currentBoard].width / 2, 1)];
     
     [Player setCurrentPlayer:testPlayerBlue];
     
@@ -68,19 +68,19 @@
     
     [BoardView setCurrentBoardView:mainBoardView];
     
-    Space *friendlyHome = [[Space alloc] initWithType:SpaceTypeFriendly position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
+    Space *friendlyHome = [[Space alloc] initWithType:ItemTypeFriendly position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
     friendlyHome.isBase = YES;
     
-    Space *enemyHome = [[Space alloc] initWithType:SpaceTypeEnemy position:CGPointMake([Board currentBoard].width / 2, 1)];
+    Space *enemyHome = [[Space alloc] initWithType:ItemTypeEnemy position:CGPointMake([Board currentBoard].width / 2, 1)];
     enemyHome.isBase = YES;
     
-    Space *emptyFlagOne = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height/2)];
+    Space *emptyFlagOne = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height/2)];
     emptyFlagOne.isFlag = YES;
     
-    Space *emptyFlagTwo = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake([Board currentBoard].width / 2 + 2, [Board currentBoard].height/2)];
+    Space *emptyFlagTwo = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Board currentBoard].width / 2 + 2, [Board currentBoard].height/2)];
     emptyFlagTwo.isFlag = YES;
     
-    Space *emptyFlagThree = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake([Board currentBoard].width / 2 - 2, [Board currentBoard].height/2)];
+    Space *emptyFlagThree = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Board currentBoard].width / 2 - 2, [Board currentBoard].height/2)];
     emptyFlagThree.isFlag = YES;
     
     [[Board currentBoard] replacePoint:friendlyHome.position withSpace:friendlyHome];
@@ -145,6 +145,8 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [testPlayerBlue startAIMovements];
 }
 
 - (BOOL)shouldAutorotate {
@@ -194,8 +196,6 @@ int gcd (int a, int b){
 
 - (void) movePlayer: (Player *) player inDirection: (DirectionType) direction {
     CGPoint newPosition = player.position;
-    
-    
     
     if (direction == DirectionLeft) {
         newPosition.x--;
@@ -281,10 +281,10 @@ int gcd (int a, int b){
 }
 
 - (void) setSwitchBackground {
-    if ([Player currentPlayer].type == PlayerTypeEnemy) {
+    if ([Player currentPlayer].type == ItemTypeEnemy) {
         self.switchPlayerButton.backgroundColor = [Utils colorWithHexString:@"2980b9"];
     }
-    else if ([Player currentPlayer].type == PlayerTypeFriendly) {
+    else if ([Player currentPlayer].type == ItemTypeFriendly) {
         self.switchPlayerButton.backgroundColor = [Utils colorWithHexString:@"c0392b"];
     }
 }
@@ -302,66 +302,16 @@ int gcd (int a, int b){
 }
 
 - (Space *)objectiveSpaceForPlayer:(Player *)player {
-    if ([player.playerID isEqualToString:@"12345"]) {
-        int distanceObjectiveOne = 0;
-        int distanceObjectiveTwo = 0;
-        int distanceObjectiveThree = 0;
-        
-        if (player.type == PlayerTypeFriendly) {
-            
-            if ([Utils notNull:[[BoardView currentBoardView] flagOne]]) {
-                if ([[BoardView currentBoardView] flagOne].space.type != SpaceTypeFriendly) {
-                    Space *objectiveSpace = [[BoardView currentBoardView] flagOne].space;
-                    distanceObjectiveOne = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
-                }
-            }
-            
-            if ([Utils notNull:[[BoardView currentBoardView] flagTwo]]) {
-                if ([[BoardView currentBoardView] flagTwo].space.type != SpaceTypeFriendly) {
-                    Space *objectiveSpace = [[BoardView currentBoardView] flagTwo].space;
-                    distanceObjectiveTwo = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
-                }
-            }
-            
-            
-            if ([Utils notNull:[[BoardView currentBoardView] flagThree]]) {
-                if ([[BoardView currentBoardView] flagThree].space.type != SpaceTypeFriendly) {
-                    Space *objectiveSpace = [[BoardView currentBoardView] flagThree].space;
-                    distanceObjectiveThree = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
-                }
-            }
-            
-        }
-        
-        if (distanceObjectiveOne != 0) {
-            if (distanceObjectiveTwo < distanceObjectiveOne && distanceObjectiveTwo != 0) {
-                if (distanceObjectiveThree < distanceObjectiveTwo && distanceObjectiveThree != 0) {
-                    return [[BoardView currentBoardView] flagThree].space;
-                }
-                else {
-                    return [[BoardView currentBoardView] flagTwo].space;
-                }
-            }
-            else if (distanceObjectiveThree < distanceObjectiveOne && distanceObjectiveThree != 0) {
-                return [[BoardView currentBoardView] flagThree].space;
-            }
-            else {
-                return [[BoardView currentBoardView] flagOne].space;
-            }
-        }
-        else if (distanceObjectiveTwo != 0) {
-            if (distanceObjectiveThree < distanceObjectiveTwo && distanceObjectiveThree != 0) {
-                return [[BoardView currentBoardView] flagThree].space;
-            }
-            else {
-                return [[BoardView currentBoardView] flagTwo].space;
-            }
-        }
-        else if (distanceObjectiveThree != 0) {
-            return [[BoardView currentBoardView] flagThree].space;
-        }
-    }
+    
     
     return nil;
 }
+
+- (void) didMoveAIPlayer:(Player *)player {
+    if ([player.playerID isEqualToString:[Player currentPlayer].playerID]) {
+        [self setScrollOffset];
+    }
+}
+
+
 @end

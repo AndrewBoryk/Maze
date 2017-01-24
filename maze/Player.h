@@ -7,14 +7,15 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "Player.h"
 #import "Space.h"
 
 @protocol PathManagerDataSource;
+@protocol PathManagerDelegate;
 
 @interface Player : NSObject
 
 @property (weak, nonatomic) id<PathManagerDataSource> dataSource;
+@property (weak, nonatomic) id<PathManagerDelegate> delegate;
 
 /// Current player instance
 + (id)sharedInstance;
@@ -35,19 +36,30 @@
 @property CGPoint position;
 
 /// Type of player
-@property PlayerType type;
+@property ItemType type;
 
 /// Initializes a player
-- (instancetype) initWithType:(PlayerType) type playerID:(NSString *)playerID withPosition: (CGPoint) position;
+- (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position;
 
 /// Determines which space would be most beneficial for the user to interact
 - (Space *) determineBestSpaceToInteract;
+
+/// Start the player moving with AI
+- (void) startAIMovements;
+
+/// End the player moving with AI
+- (void) endAIMovements;
 
 @end
 
 @protocol PathManagerDataSource <NSObject>
 
-/// DataSource for termining objective for player
-- (Space *) objectiveSpaceForPlayer: (Player *)player;
+@end
+
+@protocol PathManagerDelegate <NSObject>
+
+@optional
+
+- (void) didMoveAIPlayer: (Player *)player;
 
 @end

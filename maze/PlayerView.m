@@ -37,10 +37,10 @@
         self.layer.borderWidth = 1.0f;
         self.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.4f].CGColor;
         
-        if (self.player.type == PlayerTypeFriendly) {
+        if (self.player.type == ItemTypeFriendly) {
             self.backgroundColor = [Utils colorWithHexString:@"2980b9"];
         }
-        else if (self.player.type == PlayerTypeEnemy) {
+        else if (self.player.type == ItemTypeEnemy) {
             self.backgroundColor = [Utils colorWithHexString:@"c0392b"];
         }
         

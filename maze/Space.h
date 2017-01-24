@@ -13,7 +13,7 @@
 @interface Space : NSObject
 
 /// Type of space
-@property SpaceType type;
+@property ItemType type;
 
 /// Position for space
 @property CGPoint position;
@@ -31,8 +31,11 @@
 @property BOOL isBase;
 
 /// Determines if player can pass through wall going in a direction
-+ (BOOL) canPass:(CGPoint )point playerType: (PlayerType) playerType;
++ (BOOL) canPass:(CGPoint )point playerType: (ItemType) playerType;
 
 /// Inits a space for type
-- (instancetype) initWithType: (SpaceType) type position: (CGPoint)position;
+- (instancetype) initWithType: (ItemType) type position: (CGPoint)position;
+
+/// Determines if spaces are the same position
++ (BOOL) space:(Space*)spaceOne isSameAsSpace:(Space *)spaceTwo;
 @end

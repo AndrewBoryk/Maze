@@ -7,8 +7,8 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "Space.h"
-#import "BoardView.h"
+@class Space;
+@class Player;
 
 @interface SpaceView : UIView <UIGestureRecognizerDelegate> {
     /// Default size for a space
@@ -45,11 +45,17 @@
 /// Determines if goal has been completed
 @property BOOL isCompleted;
 
+/// Call to interact with a space
+- (void) handleInteraction: (UITapGestureRecognizer *) gesture;
+
+/// Handle an interaction manually
++ (void) handleInteractionWithSpace: (Space *)space andPlayer: (Player *)player andStrength:(float)strength ;
+
 /// Initialize space
 - (instancetype) initWithSpace:(Space *)space width:(NSInteger)width height:(NSInteger) height;
 
 /// Adjust the space
-+ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType withStrength: (float) strength;
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (ItemType) playerType withStrength: (float) strength;
 
 /// Adjusts the percentage that the space is captured
 + (void) adjustSpacePercentage: (SpaceView *) spaceView;

@@ -7,7 +7,7 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "Board.h"
+@class Board;
 @class SpaceView;
 #import "Player.h"
 

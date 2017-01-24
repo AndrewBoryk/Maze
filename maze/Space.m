@@ -15,13 +15,13 @@
     self = [super init];
     
     if (self) {
-        self.type = SpaceTypeEmpty;
+        self.type = ItemTypeEmpty;
     }
     
     return self;
 }
 
-- (instancetype) initWithType: (SpaceType) type position: (CGPoint)position {
+- (instancetype) initWithType: (ItemType) type position: (CGPoint)position {
     self = [self init];
     
     if (self) {
@@ -31,12 +31,12 @@
         self.friendlyPercentage = 0;
         self.enemyPercentage = 0;
         
-        if (self.type == SpaceTypeFriendly) {
+        if (self.type == ItemTypeFriendly) {
             self.friendlyPercentage = 1;
             self.enemyPercentage = 0;
             
         }
-        else if (self.type == SpaceTypeEnemy) {
+        else if (self.type == ItemTypeEnemy) {
             self.friendlyPercentage = 0;
             self.enemyPercentage = 1;
         }
@@ -45,21 +45,24 @@
     return self;
 }
 
-+ (BOOL) canPass:(CGPoint )point playerType:(PlayerType)playerType {
++ (BOOL) canPass:(CGPoint )point playerType:(ItemType)playerType {
     
     Space *space = [[Board currentBoard] spaceForPoint:point];
     if ([Utils notNull:space]) {
-        if (playerType == PlayerTypeFriendly) {
-            if (space.type == SpaceTypeFriendly) {
-                return YES;
-            }
-        }
-        else if (playerType == PlayerTypeEnemy) {
-            if (space.type == SpaceTypeEnemy) {
-                return YES;
-            }
+        if (playerType == space.type) {
+            return YES;
         }
     }
+    return NO;
+}
+
++ (BOOL) space:(Space *)spaceOne isSameAsSpace:(Space *)spaceTwo {
+    if ([Utils notNull:spaceOne] && [Utils notNull:spaceTwo]) {
+        if ((spaceOne.position.x == spaceTwo.position.x) && (spaceOne.position.y == spaceTwo.position.y)) {
+            return YES;
+        }
+    }
+    
     return NO;
 }
 
