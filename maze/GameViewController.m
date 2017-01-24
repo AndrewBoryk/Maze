@@ -44,14 +44,14 @@
     
     [[SpaceView sharedInstance] setDefaultSpaceSize:40.0f];
     
-    testBoard = [[Board alloc] initWithWidth:([Utils screenWidth]/[[SpaceView sharedInstance] defaultSpaceSize]) height:([Utils screenHeight]/[[SpaceView sharedInstance] defaultSpaceSize])];
+    testBoard = [[Board alloc] initWithWidth:(([Utils screenWidth] + ([[SpaceView sharedInstance] defaultSpaceSize] * 2.0f))/[[SpaceView sharedInstance] defaultSpaceSize]) height:(([Utils screenHeight] + ([[SpaceView sharedInstance] defaultSpaceSize] * 2.0f))/[[SpaceView sharedInstance] defaultSpaceSize])];
     
-    [testBoard replacePoint:CGPointMake(4, 1) withType:SpaceTypeEnemyHome];
-    [testBoard replacePoint:CGPointMake(4, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
+    [testBoard replacePoint:CGPointMake(testBoard.width / 2, 1) withType:SpaceTypeEnemyHome];
+    [testBoard replacePoint:CGPointMake(testBoard.width / 2, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
     
     boardView = [[BoardView alloc] initWithBoard:testBoard];
     
-    testPlayer = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(4, testBoard.height - 2)];
+    testPlayer = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
     
     [boardView addPlayer:testPlayer];
     
@@ -68,7 +68,6 @@
         
         [Utils printString:rowString];
     }
-    boardView.userInteractionEnabled = NO;
     
     
     swipeRecognizerLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
@@ -102,8 +101,6 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [boardView movePlayer:testPlayer toPosition:CGPointMake(4, testBoard.height - 2)];
 }
 
 - (BOOL)shouldAutorotate {
