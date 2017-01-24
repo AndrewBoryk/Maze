@@ -43,7 +43,7 @@
     
     //SKView *skView = (SKView *)self.view;
     
-    [[SpaceView sharedInstance] setDefaultSpaceSize:40.0f];
+    [[SpaceView sharedInstance] setDefaultSpaceSize:60.0f];
     
     testBoard = [[Board alloc] initWithWidth:21 height:21];
     
@@ -57,8 +57,6 @@
     [Player setCurrentPlayer:testPlayer];
     
     [boardView addPlayer:testPlayer];
-    
-    boardView.center = self.view.center;
     
     [self.scrollView addSubview:boardView];
     
@@ -179,10 +177,26 @@ int gcd (int a, int b){
 }
 
 - (void) setScrollOffset {
-    CGFloat newContentOffsetX = [Player currentPlayer].position.x * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - (self.view.frame.size.width);
-    CGFloat newContentOffsetY = ([Player currentPlayer].position.y * [[SpaceView sharedInstance] defaultSpaceSize]) - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - self.view.frame.size.height;
+    CGFloat newContentOffsetX = ([Player currentPlayer].position.x + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenWidth]/2.0f;
+    CGFloat newContentOffsetY = (([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize]) - [Utils screenHeight] + [[SpaceView sharedInstance] defaultSpaceSize];
+    CGFloat rightEdgeBuffer = (boardView.frame.size.width - [Utils screenWidth]);
+    
+    NSLog(@"Right edge buffer: %f", rightEdgeBuffer);
+    if (newContentOffsetY < 0) {
+        newContentOffsetY = 0;
+    }
+    
+    if (newContentOffsetX < 0) {
+        newContentOffsetX = 0;
+    }
+    else if (newContentOffsetX > rightEdgeBuffer) {
+        newContentOffsetX = rightEdgeBuffer;
+    }
     
     [self.scrollView setContentOffset:CGPointMake(newContentOffsetX, newContentOffsetY) animated:YES];
+    NSLog(@"BoardView X: %f  Y: %f  Width: %f  Height: %f", boardView.frame.origin.x, boardView.frame.origin.y, boardView.frame.size.width, boardView.frame.size.height);
+    NSLog(@"Screen Width: %f  Height: %f", [Utils screenWidth], [Utils screenHeight]);
+    NSLog(@"Position Width: %f  Height: %f", [Player currentPlayer].position.x * [[SpaceView sharedInstance] defaultSpaceSize], ([Player currentPlayer].position.y * [[SpaceView sharedInstance] defaultSpaceSize]));
     NSLog(@"Content Offset X: %f  Y: %f", newContentOffsetX, newContentOffsetY);
 }
 

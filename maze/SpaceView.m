@@ -39,7 +39,7 @@
     self = [super init];
     
     if (self) {
-        self.defaultSpaceSize = 30.0f;
+        self.defaultSpaceSize = 60.0f;
     }
     
     return self;
