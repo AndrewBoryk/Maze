@@ -61,7 +61,7 @@
     [self.scrollView addSubview:boardView];
     
 //    [Utils print:testBoard.boardArray tag:@"Board"];
-    [testBoard printBoard];
+    //[testBoard printBoard];
     
     
     swipeRecognizerLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
@@ -169,7 +169,7 @@ int gcd (int a, int b){
     
     [self setScrollOffset];
     
-    [testBoard printBoard];
+    //[testBoard printBoard];
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -181,7 +181,7 @@ int gcd (int a, int b){
     CGFloat newContentOffsetY = (([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize]) - [Utils screenHeight] + [[SpaceView sharedInstance] defaultSpaceSize];
     CGFloat rightEdgeBuffer = (boardView.frame.size.width - [Utils screenWidth]);
     
-    NSLog(@"Right edge buffer: %f", rightEdgeBuffer);
+    //NSLog(@"Right edge buffer: %f", rightEdgeBuffer);
     if (newContentOffsetY < 0) {
         newContentOffsetY = 0;
     }
@@ -194,10 +194,10 @@ int gcd (int a, int b){
     }
     
     [self.scrollView setContentOffset:CGPointMake(newContentOffsetX, newContentOffsetY) animated:YES];
-    NSLog(@"BoardView X: %f  Y: %f  Width: %f  Height: %f", boardView.frame.origin.x, boardView.frame.origin.y, boardView.frame.size.width, boardView.frame.size.height);
-    NSLog(@"Screen Width: %f  Height: %f", [Utils screenWidth], [Utils screenHeight]);
-    NSLog(@"Position Width: %f  Height: %f", [Player currentPlayer].position.x * [[SpaceView sharedInstance] defaultSpaceSize], ([Player currentPlayer].position.y * [[SpaceView sharedInstance] defaultSpaceSize]));
-    NSLog(@"Content Offset X: %f  Y: %f", newContentOffsetX, newContentOffsetY);
+    //NSLog(@"BoardView X: %f  Y: %f  Width: %f  Height: %f", boardView.frame.origin.x, boardView.frame.origin.y, boardView.frame.size.width, boardView.frame.size.height);
+    //NSLog(@"Screen Width: %f  Height: %f", [Utils screenWidth], [Utils screenHeight]);
+    //NSLog(@"Position Width: %f  Height: %f", [Player currentPlayer].position.x * [[SpaceView sharedInstance] defaultSpaceSize], ([Player currentPlayer].position.y * [[SpaceView sharedInstance] defaultSpaceSize]));
+    //NSLog(@"Content Offset X: %f  Y: %f", newContentOffsetX, newContentOffsetY);
 }
 
 @end
