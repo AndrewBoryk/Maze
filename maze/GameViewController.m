@@ -303,10 +303,11 @@ int gcd (int a, int b){
 
 - (Space *)objectiveSpaceForPlayer:(Player *)player {
     if ([player.playerID isEqualToString:@"12345"]) {
+        int distanceObjectiveOne = 0;
+        int distanceObjectiveTwo = 0;
+        int distanceObjectiveThree = 0;
+        
         if (player.type == PlayerTypeFriendly) {
-            int distanceObjectiveOne = 0;
-            int distanceObjectiveTwo = 0;
-            int distanceObjectiveThree = 0;
             
             if ([Utils notNull:[[BoardView currentBoardView] flagOne]]) {
                 if ([[BoardView currentBoardView] flagOne].space.type != SpaceTypeFriendly) {
@@ -330,7 +331,34 @@ int gcd (int a, int b){
                 }
             }
             
-            
+        }
+        
+        if (distanceObjectiveOne != 0) {
+            if (distanceObjectiveTwo < distanceObjectiveOne && distanceObjectiveTwo != 0) {
+                if (distanceObjectiveThree < distanceObjectiveTwo && distanceObjectiveThree != 0) {
+                    return [[BoardView currentBoardView] flagThree].space;
+                }
+                else {
+                    return [[BoardView currentBoardView] flagTwo].space;
+                }
+            }
+            else if (distanceObjectiveThree < distanceObjectiveOne && distanceObjectiveThree != 0) {
+                return [[BoardView currentBoardView] flagThree].space;
+            }
+            else {
+                return [[BoardView currentBoardView] flagOne].space;
+            }
+        }
+        else if (distanceObjectiveTwo != 0) {
+            if (distanceObjectiveThree < distanceObjectiveTwo && distanceObjectiveThree != 0) {
+                return [[BoardView currentBoardView] flagThree].space;
+            }
+            else {
+                return [[BoardView currentBoardView] flagTwo].space;
+            }
+        }
+        else if (distanceObjectiveThree != 0) {
+            return [[BoardView currentBoardView] flagThree].space;
         }
     }
     
