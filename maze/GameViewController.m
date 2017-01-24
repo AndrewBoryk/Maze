@@ -13,7 +13,9 @@
 #import "SpaceView.h"
 
 @implementation GameViewController {
-    Player *testPlayer;
+    Player *testPlayerBlue;
+    
+    Player *testPlayerRed;
     
     BoardView *boardView;
     
@@ -43,6 +45,8 @@
     
     //SKView *skView = (SKView *)self.view;
     
+    self.switchPlayerButton.layer.cornerRadius = 6.0f;
+    
     [[SpaceView sharedInstance] setDefaultSpaceSize:60.0f];
     
     testBoard = [[Board alloc] initWithWidth:21 height:21];
@@ -52,11 +56,15 @@
     
     boardView = [[BoardView alloc] initWithBoard:testBoard];
     
-    testPlayer = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
+    testPlayerBlue = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
+    testPlayerRed = [[Player alloc] initWithType:PlayerTypeEnemy playerID:@"12346" withPosition:CGPointMake(testBoard.width / 2, 1)];
     
-    [Player setCurrentPlayer:testPlayer];
+    [Player setCurrentPlayer:testPlayerBlue];
     
-    [boardView addPlayer:testPlayer];
+    [self setSwitchBackground];
+    
+    [boardView addPlayer:testPlayerBlue];
+    [boardView addPlayer:testPlayerRed];
     
     [self.scrollView addSubview:boardView];
     
@@ -215,4 +223,25 @@ int gcd (int a, int b){
         [self setScrollOffset];
     }];
 }
+- (IBAction)switchPlayerAction:(id)sender {
+    if ([[Player currentPlayer].playerID isEqualToString:testPlayerRed.playerID]) {
+        [Player setCurrentPlayer:testPlayerBlue];
+    }
+    else if ([[Player currentPlayer].playerID isEqualToString:testPlayerBlue.playerID]) {
+        [Player setCurrentPlayer:testPlayerRed];
+    }
+    
+    [self setScrollOffset];
+    [self setSwitchBackground];
+}
+
+- (void) setSwitchBackground {
+    if ([Player currentPlayer].type == PlayerTypeEnemy) {
+        self.switchPlayerButton.backgroundColor = [Utils colorWithHexString:@"2980b9"];
+    }
+    else if ([Player currentPlayer].type == PlayerTypeFriendly) {
+        self.switchPlayerButton.backgroundColor = [Utils colorWithHexString:@"c0392b"];
+    }
+}
+
 @end

@@ -167,7 +167,7 @@
             }
             else if (spaceView.space.enemyPercentage > 0) {
                 
-                spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
+                spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.enemyPercentage];
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
                 if (spaceView.space.enemyPercentage == 1) {
                     spaceView.space.type = SpaceTypeCapturedEnemy;

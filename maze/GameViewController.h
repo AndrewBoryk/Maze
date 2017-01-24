@@ -15,4 +15,10 @@
 /// Scroll view for board
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
+/// Button to switch players during testing
+@property (strong, nonatomic) IBOutlet UIButton *switchPlayerButton;
+
+/// Switch players during testing
+- (IBAction)switchPlayerAction:(id)sender;
+
 @end

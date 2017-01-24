@@ -27,11 +27,23 @@
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="IlZ-ha-pXL"/>
                                 </connections>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dma-Dj-8xr">
+                                <rect key="frame" x="327" y="619" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="Tac-X7-CwM"/>
+                                    <constraint firstAttribute="width" constant="36" id="ysr-0O-tYc"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="switchPlayerAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="EQW-Sl-dzz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="z1Z-oj-IFg" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" id="FPz-d5-Yxq"/>
+                            <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="dma-Dj-8xr" secondAttribute="bottom" constant="12" id="HNP-e4-G7K"/>
                             <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="z1Z-oj-IFg" secondAttribute="bottom" id="XT2-WS-dTD"/>
+                            <constraint firstAttribute="trailing" secondItem="dma-Dj-8xr" secondAttribute="trailing" constant="12" id="doQ-Zi-6v2"/>
                             <constraint firstItem="z1Z-oj-IFg" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="hlv-5P-ZXx"/>
                             <constraint firstAttribute="trailing" secondItem="z1Z-oj-IFg" secondAttribute="trailing" id="rw7-z2-Bdk"/>
                         </constraints>
@@ -39,6 +51,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="scrollView" destination="z1Z-oj-IFg" id="1VM-O1-Oos"/>
+                        <outlet property="switchPlayerButton" destination="dma-Dj-8xr" id="B46-ko-jRv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
