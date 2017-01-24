@@ -108,7 +108,13 @@
         
         if (absoluteX <= 2 && absoluteY <= 2) {
             if (!(absoluteX == 2 && absoluteY == 2)) {
-                [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] inBoard:(BoardView *)self.superview];
+                if (absoluteX == 2 || absoluteY == 2) {
+                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] inBoard:(BoardView *)self.superview withStrength:0.5f];
+                }
+                else {
+                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] inBoard:(BoardView *)self.superview withStrength:1.0f];
+                }
+                
             }
             
         }
@@ -117,25 +123,25 @@
     
 }
 
-+ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType inBoard: (BoardView *) boardView {
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType inBoard: (BoardView *) boardView withStrength: (float) strength {
     SpaceView *spaceView = [boardView spaceViewForPoint:position];
     
     if ([Utils notNull:spaceView]) {
         if ([Utils notNull:spaceView.space]) {
             if (playerType == PlayerTypeFriendly) {
                 if (spaceView.space.enemyPercentage > 0) {
-                    spaceView.space.enemyPercentage-= 0.2f;
+                    spaceView.space.enemyPercentage-= (0.2f * strength);
                 }
                 else if (spaceView.space.friendlyPercentage < 1) {
-                    spaceView.space.friendlyPercentage+= 0.2f;
+                    spaceView.space.friendlyPercentage+= (0.2f * strength);
                 }
             }
             else if (playerType == PlayerTypeEnemy) {
                 if (spaceView.space.friendlyPercentage > 0) {
-                    spaceView.space.friendlyPercentage-= 0.2f;
+                    spaceView.space.friendlyPercentage-= (0.2f * strength);
                 }
                 else if (spaceView.space.enemyPercentage < 1) {
-                    spaceView.space.enemyPercentage+= 0.2f;
+                    spaceView.space.enemyPercentage+= (0.2f * strength);
                 }
             }
             
