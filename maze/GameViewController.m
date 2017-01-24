@@ -200,4 +200,19 @@ int gcd (int a, int b){
     //NSLog(@"Content Offset X: %f  Y: %f", newContentOffsetX, newContentOffsetY);
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    [coordinator animateAlongsideTransition:^(id  _Nonnull context) {
+        
+        [self setScrollOffset];
+        
+    } completion:^(id  _Nonnull context) {
+        
+        // Change origin rect because the screen has rotated
+        //        self.mediaView.originRect = self.mediaView.frame;
+        
+        [self setScrollOffset];
+    }];
+}
 @end
