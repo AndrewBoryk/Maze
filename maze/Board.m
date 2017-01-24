@@ -125,4 +125,21 @@
     
     return wallNumber.integerValue;
 }
+
+- (BOOL) replacePoint:(CGPoint)point withType:(SpaceType)type {
+    
+    if (point.x < self.width && point.y < self.height) {
+        if (point.y < self.boardArray.count) {
+            NSMutableArray *rowArray = [[self.boardArray objectAtIndex:point.y] mutableCopy];
+            if (point.x < rowArray.count) {
+                Space *space = [[Space alloc] initWithType:type position:point];
+                [rowArray setObject:space atIndexedSubscript:point.x];
+                [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
 @end

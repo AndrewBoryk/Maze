@@ -24,9 +24,13 @@
     
     //SKView *skView = (SKView *)self.view;
     
-    [[SpaceView sharedInstance] setDefaultSpaceSize:30.0f];
+    [[SpaceView sharedInstance] setDefaultSpaceSize:40.0f];
     
     Board *testBoard = [[Board alloc] initWithWidth:([Utils screenWidth]/[[SpaceView sharedInstance] defaultSpaceSize]) height:([Utils screenHeight]/[[SpaceView sharedInstance] defaultSpaceSize])];
+    
+    [testBoard replacePoint:CGPointMake(4, 1) withType:SpaceTypeEnemyHome];
+    [testBoard replacePoint:CGPointMake(4, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
+    
     BoardView *boardView = [[BoardView alloc] initWithBoard:testBoard];
     boardView.center = self.view.center;
     

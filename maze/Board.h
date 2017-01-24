@@ -35,4 +35,7 @@
 /// Returns wall for point
 - (WallType) wallForPoint: (CGPoint) point;
 
+/// Replaces a space with a new space
+- (BOOL) replacePoint: (CGPoint) point withType:(SpaceType) type;
+
 @end
