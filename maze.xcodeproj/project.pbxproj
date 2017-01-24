@@ -24,6 +24,7 @@
 		45331CC31E09081E00E3B668 /* Board.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331CC21E09081E00E3B668 /* Board.m */; };
 		45331CC71E090DEC00E3B668 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331CC61E090DEC00E3B668 /* Utils.m */; };
 		45425AFA1E37A444006E67AB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45425AF91E37A444006E67AB /* CoreMotion.framework */; };
+		459C1EA41E37ECA600FDE594 /* PathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 459C1EA31E37ECA600FDE594 /* PathManager.m */; };
 		45AE22C51E36F740004B9F00 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AE22C41E36F740004B9F00 /* PlayerView.m */; };
 		45ECF7301E098DA80008108C /* SpaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF72F1E098DA80008108C /* SpaceView.m */; };
 		45ECF7331E0991D30008108C /* Appearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF7321E0991D30008108C /* Appearance.m */; };
@@ -80,6 +81,8 @@
 		45331CC51E090DEC00E3B668 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		45331CC61E090DEC00E3B668 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		45425AF91E37A444006E67AB /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		459C1EA21E37ECA600FDE594 /* PathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathManager.h; sourceTree = "<group>"; };
+		459C1EA31E37ECA600FDE594 /* PathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathManager.m; sourceTree = "<group>"; };
 		45AE22C31E36F740004B9F00 /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
 		45AE22C41E36F740004B9F00 /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
 		45ECF72E1E098DA80008108C /* SpaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceView.h; sourceTree = "<group>"; };
@@ -147,6 +150,7 @@
 				45331C851E08FC7E00E3B668 /* GameScene.m */,
 				45331C871E08FC7E00E3B668 /* GameViewController.h */,
 				45331C881E08FC7E00E3B668 /* GameViewController.m */,
+				459C1EA51E37ECAC00FDE594 /* Path Manager */,
 				45331CB71E08FE8500E3B668 /* Space */,
 				45331CBF1E0905C300E3B668 /* Player */,
 				45331CC41E09082400E3B668 /* Board */,
@@ -215,10 +219,10 @@
 		45331CBF1E0905C300E3B668 /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				45AE22C31E36F740004B9F00 /* PlayerView.h */,
-				45AE22C41E36F740004B9F00 /* PlayerView.m */,
 				45331CBC1E0905BD00E3B668 /* Player.h */,
 				45331CBD1E0905BD00E3B668 /* Player.m */,
+				45AE22C31E36F740004B9F00 /* PlayerView.h */,
+				45AE22C41E36F740004B9F00 /* PlayerView.m */,
 			);
 			name = Player;
 			sourceTree = "<group>";
@@ -240,6 +244,15 @@
 				45425AF91E37A444006E67AB /* CoreMotion.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		459C1EA51E37ECAC00FDE594 /* Path Manager */ = {
+			isa = PBXGroup;
+			children = (
+				459C1EA21E37ECA600FDE594 /* PathManager.h */,
+				459C1EA31E37ECA600FDE594 /* PathManager.m */,
+			);
+			name = "Path Manager";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,6 +393,7 @@
 			files = (
 				45331CC71E090DEC00E3B668 /* Utils.m in Sources */,
 				45331CBA1E09057E00E3B668 /* Enums.m in Sources */,
+				459C1EA41E37ECA600FDE594 /* PathManager.m in Sources */,
 				45ECF7391E0999A70008108C /* BoardView.m in Sources */,
 				45331CB61E08FE5600E3B668 /* Space.m in Sources */,
 				45AE22C51E36F740004B9F00 /* PlayerView.m in Sources */,

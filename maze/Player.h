@@ -8,8 +8,13 @@
 
 #import "Maze-Prefix.pch"
 #import "Player.h"
+#import "Space.h"
+
+@protocol PathManagerDataSource;
 
 @interface Player : NSObject
+
+@property (weak, nonatomic) id<PathManagerDataSource> dataSource;
 
 /// Current player instance
 + (id)sharedInstance;
@@ -34,5 +39,15 @@
 
 /// Initializes a player
 - (instancetype) initWithType:(PlayerType) type playerID:(NSString *)playerID withPosition: (CGPoint) position;
+
+/// Determines which space would be most beneficial for the user to interact
+- (Space *) determineBestSpaceToInteract;
+
+@end
+
+@protocol PathManagerDataSource <NSObject>
+
+/// DataSource for termining objective for player
+- (Space *) objectiveSpaceForPlayer: (Player *)player;
 
 @end

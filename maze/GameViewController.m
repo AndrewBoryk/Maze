@@ -55,6 +55,8 @@
     [Board setCurrentBoard:mainBoard];
     
     testPlayerBlue = [[Player alloc] initWithType:PlayerTypeFriendly playerID:@"12345" withPosition:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
+    testPlayerBlue.dataSource = self;
+    
     testPlayerRed = [[Player alloc] initWithType:PlayerTypeEnemy playerID:@"12346" withPosition:CGPointMake([Board currentBoard].width / 2, 1)];
     
     [Player setCurrentPlayer:testPlayerBlue];
@@ -297,5 +299,41 @@ int gcd (int a, int b){
     else if (objectiveNumber == 3) {
         self.objectiveThreeView.backgroundColor = spaceView.backgroundColor;
     }
+}
+
+- (Space *)objectiveSpaceForPlayer:(Player *)player {
+    if ([player.playerID isEqualToString:@"12345"]) {
+        if (player.type == PlayerTypeFriendly) {
+            int distanceObjectiveOne = 0;
+            int distanceObjectiveTwo = 0;
+            int distanceObjectiveThree = 0;
+            
+            if ([Utils notNull:[[BoardView currentBoardView] flagOne]]) {
+                if ([[BoardView currentBoardView] flagOne].space.type != SpaceTypeFriendly) {
+                    Space *objectiveSpace = [[BoardView currentBoardView] flagOne].space;
+                    distanceObjectiveOne = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
+                }
+            }
+            
+            if ([Utils notNull:[[BoardView currentBoardView] flagTwo]]) {
+                if ([[BoardView currentBoardView] flagTwo].space.type != SpaceTypeFriendly) {
+                    Space *objectiveSpace = [[BoardView currentBoardView] flagTwo].space;
+                    distanceObjectiveTwo = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
+                }
+            }
+            
+            
+            if ([Utils notNull:[[BoardView currentBoardView] flagThree]]) {
+                if ([[BoardView currentBoardView] flagThree].space.type != SpaceTypeFriendly) {
+                    Space *objectiveSpace = [[BoardView currentBoardView] flagThree].space;
+                    distanceObjectiveThree = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
+                }
+            }
+            
+            
+        }
+    }
+    
+    return nil;
 }
 @end
