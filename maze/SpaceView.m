@@ -8,6 +8,7 @@
 
 #import "SpaceView.h"
 
+
 @implementation SpaceView {
     
     /// Reconizes when a user taps on a space
@@ -91,6 +92,8 @@
         tapRecognizer.numberOfTouchesRequired = 1;
         tapRecognizer.delegate = self;
         
+        [self addGestureRecognizer:tapRecognizer];
+        
 //        [self maskLayerMake:self.space.type];
     }
     
@@ -162,6 +165,98 @@
 }
 
 - (void) handleTap: (UITapGestureRecognizer *) gesture {
+    if (self.space.type != SpaceTypeWall && self.space.type != SpaceTypeEnemyHome && self.space.type != SpaceTypeFriendlyHome) {
+        double absoluteX = fabs((self.space.position.x - [Player currentPlayer].position.x));
+        double absoluteY = fabs((self.space.position.y - [Player currentPlayer].position.y));
+        
+        if (absoluteX <= 2 && absoluteY <= 2) {
+            if (!(absoluteX == 2 && absoluteY == 2)) {
+                [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] inBoard:(BoardView *)self.superview];
+            }
+            
+        }
+        
+    }
+    
+}
+
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType inBoard: (BoardView *) boardView {
+    SpaceView *spaceView = [boardView spaceViewForPoint:position];
+    
+    if ([Utils notNull:spaceView]) {
+        if ([Utils notNull:spaceView.space]) {
+            if (playerType == PlayerTypeFriendly) {
+                if (spaceView.space.enemyPercentage > 0) {
+                    spaceView.space.enemyPercentage-= 0.1f;
+                }
+                else if (spaceView.space.friendlyPercentage < 1) {
+                    spaceView.space.friendlyPercentage+= 0.1f;
+                }
+            }
+            else if (playerType == PlayerTypeEnemy) {
+                if (spaceView.space.friendlyPercentage > 0) {
+                    spaceView.space.friendlyPercentage-= 0.1f;
+                }
+                else if (spaceView.space.enemyPercentage < 1) {
+                    spaceView.space.enemyPercentage+= 0.1f;
+                }
+            }
+            
+            if (spaceView.space.friendlyPercentage > 1) {
+                spaceView.space.friendlyPercentage = 1;
+            }
+            else if (spaceView.space.friendlyPercentage < 0) {
+                spaceView.space.friendlyPercentage = 0;
+            }
+            
+            if (spaceView.space.enemyPercentage > 1) {
+                spaceView.space.enemyPercentage = 1;
+            }
+            else if (spaceView.space.enemyPercentage < 0) {
+                spaceView.space.enemyPercentage = 0;
+            }
+            
+            if (spaceView.space.friendlyPercentage > 0) {
+                
+                spaceView.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
+                spaceView.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
+                if (spaceView.space.friendlyPercentage == 1) {
+                    spaceView.space.type = SpaceTypeCapturedFriendly;
+                }
+                else {
+                    spaceView.space.type = SpaceTypeEmpty;
+                }
+                
+            }
+            else if (spaceView.space.enemyPercentage > 0) {
+                
+                spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
+                spaceView.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
+                if (spaceView.space.enemyPercentage == 1) {
+                    spaceView.space.type = SpaceTypeCapturedEnemy;
+                }
+                else {
+                    spaceView.space.type = SpaceTypeEmpty;
+                }
+            }
+            else {
+                spaceView.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
+                spaceView.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
+                spaceView.space.type = SpaceTypeEmpty;
+            }
+        }
+    }
+    
+    
+    if (![Utils notNull:boardView.spaces]) {
+        boardView.spaces = [[NSMutableDictionary alloc] init];
+    }
+    
+    NSString *spaceKey = [NSString stringWithFormat:@"%i:%i", (int)position.x, (int)position.y];
+    
+    if ([Utils notNull:spaceKey]) {
+        [boardView.spaces setObject:spaceView forKey:spaceKey];
+    }
     
 }
 

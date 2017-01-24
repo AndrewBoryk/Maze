@@ -8,6 +8,7 @@
 
 #import "BoardView.h"
 #import "PlayerView.h"
+#import "SpaceView.h"
 
 @implementation BoardView
 

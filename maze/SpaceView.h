@@ -8,6 +8,7 @@
 
 #import "Maze-Prefix.pch"
 #import "Space.h"
+#import "BoardView.h"
 
 @interface SpaceView : UIView <UIGestureRecognizerDelegate> {
     /// Default size for a space
@@ -43,4 +44,7 @@
 
 /// Initialize space
 - (instancetype) initWithSpace:(Space *)space width:(NSInteger)width height:(NSInteger) height;
+
+/// Adjust the space
++ (void) adjustSpaceAtPosition: (CGPoint) position forType: (PlayerType) playerType inBoard: (BoardView *) boardView;
 @end

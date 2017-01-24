@@ -10,6 +10,7 @@
 #import "GameScene.h"
 #import "Board.h"
 #import "BoardView.h"
+#import "SpaceView.h"
 
 @implementation GameViewController {
     Player *testPlayer;

@@ -18,6 +18,12 @@
 /// Position for space
 @property CGPoint position;
 
+/// Percentage that a space is friendly
+@property float friendlyPercentage;
+
+/// Percentage that a space is enemy
+@property float enemyPercentage;
+
 /// Determines if player can pass through wall going in a direction
 + (BOOL) canPass:(CGPoint )point inBoard: (Board *)board playerType: (PlayerType) playerType;
 
