@@ -13,6 +13,9 @@
     
     /// Reconizes when a user taps on a space
     UITapGestureRecognizer *tapRecognizer;
+    
+    /// Imageview which holds the flag
+    UIImageView *flagImageView;
 }
 
 /*
@@ -78,11 +81,11 @@
             self.backgroundColor = [Utils colorWithHexString:@"141414"];
             self.layer.borderColor = [Utils colorWithHexString:@"141414"].CGColor;
         }
-        else if (self.space.type == SpaceTypeFriendlyHome || self.space.type == SpaceTypeCapturedFriendly || self.space.type == SpaceTypeCapturedFriendlyFlag) {
+        else if (self.space.type == SpaceTypeFriendly) {
             self.backgroundColor = [Utils colorWithHexString:@"3498db"];
             self.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
         }
-        else if (self.space.type == SpaceTypeEnemyHome || self.space.type == SpaceTypeCapturedEnemy || self.space.type == SpaceTypeCapturedEnemyFlag) {
+        else if (self.space.type == SpaceTypeEnemy) {
             self.backgroundColor = [Utils colorWithHexString:@"e74c3c"];
             self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
         }
@@ -94,6 +97,14 @@
         
         [self addGestureRecognizer:tapRecognizer];
         
+        flagImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Flag"]];
+        flagImageView.frame = CGRectMake(0, 0, 24, 24);
+        flagImageView.center = CGPointMake(self.frame.size.width/2.0f, self.frame.size.height/2.0f);
+        flagImageView.alpha = 0.6f;
+        flagImageView.hidden = !space.isFlag;
+        flagImageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        [self addSubview:flagImageView];
 //        [self maskLayerMake:self.space.type];
     }
     
@@ -102,7 +113,7 @@
 
 
 - (void) handleTap: (UITapGestureRecognizer *) gesture {
-    if (self.space.type != SpaceTypeWall && self.space.type != SpaceTypeEnemyHome && self.space.type != SpaceTypeFriendlyHome) {
+    if (self.space.type != SpaceTypeWall && !self.space.isBase) {
         double absoluteX = fabs((self.space.position.x - [Player currentPlayer].position.x));
         double absoluteY = fabs((self.space.position.y - [Player currentPlayer].position.y));
         
@@ -164,7 +175,7 @@
                 spaceView.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
                 if (spaceView.space.friendlyPercentage == 1) {
-                    spaceView.space.type = SpaceTypeCapturedFriendly;
+                    spaceView.space.type = SpaceTypeFriendly;
                 }
                 else {
                     spaceView.space.type = SpaceTypeEmpty;
@@ -176,7 +187,7 @@
                 spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.enemyPercentage];
                 spaceView.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
                 if (spaceView.space.enemyPercentage == 1) {
-                    spaceView.space.type = SpaceTypeCapturedEnemy;
+                    spaceView.space.type = SpaceTypeEnemy;
                 }
                 else {
                     spaceView.space.type = SpaceTypeEmpty;

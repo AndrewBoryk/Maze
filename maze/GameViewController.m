@@ -51,8 +51,18 @@
     
     testBoard = [[Board alloc] initWithWidth:21 height:21];
     
-    [testBoard replacePoint:CGPointMake(testBoard.width / 2, 1) withType:SpaceTypeEnemyHome];
-    [testBoard replacePoint:CGPointMake(testBoard.width / 2, testBoard.height - 2) withType:SpaceTypeFriendlyHome];
+    Space *friendlyHome = [[Space alloc] initWithType:SpaceTypeFriendly position:CGPointMake(testBoard.width / 2, testBoard.height - 2)];
+    friendlyHome.isBase = YES;
+    
+    Space *enemyHome = [[Space alloc] initWithType:SpaceTypeEnemy position:CGPointMake(testBoard.width / 2, 1)];
+    enemyHome.isBase = YES;
+    
+    Space *emptyFlag = [[Space alloc] initWithType:SpaceTypeEmpty position:CGPointMake(testBoard.width / 2, testBoard.height/2)];
+    emptyFlag.isFlag = YES;
+    
+    [testBoard replacePoint:friendlyHome.position withSpace:friendlyHome];
+    [testBoard replacePoint:enemyHome.position withSpace:enemyHome];
+    [testBoard replacePoint:emptyFlag.position withSpace:emptyFlag];
     
     boardView = [[BoardView alloc] initWithBoard:testBoard];
     

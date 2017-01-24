@@ -32,14 +32,9 @@ typedef NS_ENUM(NSInteger, WallType) {
 /// Type of Space
 typedef NS_ENUM(NSInteger, SpaceType) {
     SpaceTypeEmpty, // 0
-    SpaceTypeEmptyFlag, // 1
-    SpaceTypeCapturedFriendly,  // 2
-    SpaceTypeCapturedEnemy,  // 3
-    SpaceTypeCapturedFriendlyFlag,  // 4
-    SpaceTypeCapturedEnemyFlag,  // 5
-    SpaceTypeWall,  // 6
-    SpaceTypeFriendlyHome,  // 7
-    SpaceTypeEnemyHome,  // 8
+    SpaceTypeFriendly,  // 1
+    SpaceTypeEnemy,  // 2
+    SpaceTypeWall,  // 3
 };
 
 typedef NS_ENUM(NSInteger, PlayerType) {

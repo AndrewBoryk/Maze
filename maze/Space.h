@@ -24,6 +24,12 @@
 /// Percentage that a space is enemy
 @property float enemyPercentage;
 
+/// Determines whether this space contains a flag
+@property BOOL isFlag;
+
+/// Determines whether this space is designated as a home base
+@property BOOL isBase;
+
 /// Determines if player can pass through wall going in a direction
 + (BOOL) canPass:(CGPoint )point inBoard: (Board *)board playerType: (PlayerType) playerType;
 

@@ -31,12 +31,12 @@
         self.friendlyPercentage = 0;
         self.enemyPercentage = 0;
         
-        if (self.type == SpaceTypeFriendlyHome || self.type == SpaceTypeCapturedFriendly || self.type == SpaceTypeCapturedFriendlyFlag) {
+        if (self.type == SpaceTypeFriendly) {
             self.friendlyPercentage = 1;
             self.enemyPercentage = 0;
             
         }
-        else if (self.type == SpaceTypeEnemyHome || self.type == SpaceTypeCapturedEnemy || self.type == SpaceTypeCapturedEnemyFlag) {
+        else if (self.type == SpaceTypeEnemy) {
             self.friendlyPercentage = 0;
             self.enemyPercentage = 1;
         }
@@ -50,12 +50,12 @@
     Space *space = [board spaceForPoint:point];
     if ([Utils notNull:space]) {
         if (playerType == PlayerTypeFriendly) {
-            if (space.type == SpaceTypeFriendlyHome || space.type == SpaceTypeCapturedFriendly || space.type == SpaceTypeCapturedFriendlyFlag) {
+            if (space.type == SpaceTypeFriendly) {
                 return YES;
             }
         }
         else if (playerType == PlayerTypeEnemy) {
-            if (space.type == SpaceTypeEnemyHome || space.type == SpaceTypeCapturedEnemy || space.type == SpaceTypeCapturedEnemyFlag) {
+            if (space.type == SpaceTypeEnemy) {
                 return YES;
             }
         }
