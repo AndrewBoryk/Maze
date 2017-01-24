@@ -14,65 +14,38 @@
     self = [super init];
     
     if (self) {
-        self.type = WallTypeNone;
-        self.leftSide = 0;
-        self.rightSide = 0;
-        self.upSide = 0;
-        self.downSide = 0;
+        self.type = SpaceTypeEmpty;
     }
     
     return self;
 }
 
-- (instancetype) initWithType: (WallType) wall position: (CGPoint)position {
+- (instancetype) initWithType: (SpaceType) type position: (CGPoint)position {
     self = [self init];
     
     if (self) {
         
-        self.type = wall;
+        self.type = type;
         self.position = position;
         
-        if (wall == WallTypeLeft || wall == WallTypeLeftRight || wall == WallTypeLeftUp || wall == WallTypeLeftDown || wall == WallTypeLeftRightUp || wall == WallTypeLeftRightDown || wall == WallTypeLeftRightUpDown || wall == WallTypeLeftUpDown) {
-            self.leftSide = YES;
-        }
-        
-        if (wall == WallTypeRight || wall == WallTypeLeftRight || wall == WallTypeRightUp || wall == WallTypeRightDown || wall == WallTypeLeftRightUp || wall == WallTypeLeftRightDown || wall == WallTypeLeftRightUpDown || wall == WallTypeRightUpDown) {
-            self.rightSide = YES;
-        }
-        
-        if (wall == WallTypeUp || wall == WallTypeUpDown || wall == WallTypeLeftUp || wall == WallTypeRightUp || wall == WallTypeLeftRightUp || wall == WallTypeRightUpDown || wall == WallTypeLeftRightUpDown || wall == WallTypeLeftUpDown) {
-            self.upSide = YES;
-        }
-        
-        if (wall == WallTypeDown || wall == WallTypeUpDown || wall == WallTypeLeftDown || wall == WallTypeRightDown || wall == WallTypeLeftRightDown || wall == WallTypeRightUpDown || wall == WallTypeLeftRightUpDown || wall == WallTypeLeftUpDown) {
-            self.downSide = YES;
-        }
     }
     
     return self;
 }
 
-+ (BOOL) canPass:(WallType)wall direction:(DirectionType)direction {
-    
-    Space *testWall = [[Space alloc] initWithType:wall position:CGPointZero];
-    
-    switch (direction) {
-        case DirectionLeft:
-            return !testWall.leftSide;
-            break;
-        case DirectionRight:
-            return !testWall.rightSide;
-            break;
-        case DirectionUp:
-            return !testWall.upSide;
-            break;
-        case DirectionDown:
-            return !testWall.downSide;
-            break;
-            
-        default:
-            break;
++ (BOOL) canPass:(Space *)space direction:(DirectionType)direction alliance: (BOOL) friendly {
+    if (friendly) {
+        if (space.type == SpaceTypeFriendlyHome || space.type == SpaceTypeCapturedFriendly || space.type == SpaceTypeCapturedFriendlyFlag) {
+            return YES;
+        }
     }
+    else {
+        if (space.type == SpaceTypeEnemyHome || space.type == SpaceTypeCapturedEnemy || space.type == SpaceTypeCapturedEnemyFlag) {
+            return YES;
+        }
+    }
+    
+   
     
     return NO;
 }

@@ -29,6 +29,19 @@ typedef NS_ENUM(NSInteger, WallType) {
     WallTypeLeftRightUpDown,  // 15
 };
 
+/// Type of Space
+typedef NS_ENUM(NSInteger, SpaceType) {
+    SpaceTypeEmpty, // 0
+    SpaceTypeEmptyFlag, // 1
+    SpaceTypeCapturedFriendly,  // 2
+    SpaceTypeCapturedEnemy,  // 3
+    SpaceTypeCapturedFriendlyFlag,  // 4
+    SpaceTypeCapturedEnemyFlag,  // 5
+    SpaceTypeWall,  // 6
+    SpaceTypeFriendlyHome,  // 7
+    SpaceTypeEnemyHome,  // 8
+};
+
 /// Direction types
 typedef NS_ENUM(NSInteger, DirectionType) {
     DirectionLeft,

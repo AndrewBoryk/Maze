@@ -25,7 +25,6 @@
 		45331CC71E090DEC00E3B668 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331CC61E090DEC00E3B668 /* Utils.m */; };
 		45ECF7301E098DA80008108C /* SpaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF72F1E098DA80008108C /* SpaceView.m */; };
 		45ECF7331E0991D30008108C /* Appearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF7321E0991D30008108C /* Appearance.m */; };
-		45ECF7361E0995320008108C /* WallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF7351E0995320008108C /* WallView.m */; };
 		45ECF7391E0999A70008108C /* BoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ECF7381E0999A70008108C /* BoardView.m */; };
 /* End PBXBuildFile section */
 
@@ -82,8 +81,6 @@
 		45ECF72F1E098DA80008108C /* SpaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpaceView.m; sourceTree = "<group>"; };
 		45ECF7311E0991D30008108C /* Appearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appearance.h; sourceTree = "<group>"; };
 		45ECF7321E0991D30008108C /* Appearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appearance.m; sourceTree = "<group>"; };
-		45ECF7341E0995320008108C /* WallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WallView.h; sourceTree = "<group>"; };
-		45ECF7351E0995320008108C /* WallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WallView.m; sourceTree = "<group>"; };
 		45ECF7371E0999A70008108C /* BoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardView.h; sourceTree = "<group>"; };
 		45ECF7381E0999A70008108C /* BoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,8 +187,6 @@
 				45331CB51E08FE5600E3B668 /* Space.m */,
 				45ECF72E1E098DA80008108C /* SpaceView.h */,
 				45ECF72F1E098DA80008108C /* SpaceView.m */,
-				45ECF7341E0995320008108C /* WallView.h */,
-				45ECF7351E0995320008108C /* WallView.m */,
 			);
 			name = Space;
 			sourceTree = "<group>";
@@ -372,7 +367,6 @@
 				45331CB61E08FE5600E3B668 /* Space.m in Sources */,
 				45331CC31E09081E00E3B668 /* Board.m in Sources */,
 				45331C891E08FC7E00E3B668 /* GameViewController.m in Sources */,
-				45ECF7361E0995320008108C /* WallView.m in Sources */,
 				45331C7F1E08FC7E00E3B668 /* AppDelegate.m in Sources */,
 				45331C861E08FC7E00E3B668 /* GameScene.m in Sources */,
 				45ECF7301E098DA80008108C /* SpaceView.m in Sources */,

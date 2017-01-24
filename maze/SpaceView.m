@@ -45,17 +45,6 @@
     
     if (self) {
         self.backgroundColor = [Appearance boardBackgroundColor];
-//        self.clipsToBounds = YES;
-        
-        self.leftWall = [[WallView alloc] initWithSide:DirectionLeft size:frame.size.width];
-        self.rightWall = [[WallView alloc] initWithSide:DirectionRight size:frame.size.width];
-        self.upWall = [[WallView alloc] initWithSide:DirectionUp size:frame.size.width];
-        self.downWall = [[WallView alloc] initWithSide:DirectionDown size:frame.size.width];
-        
-        [self addSubview: self.leftWall];
-        [self addSubview: self.rightWall];
-        [self addSubview: self.upWall];
-        [self addSubview: self.downWall];
     }
     
     return self;
@@ -75,11 +64,27 @@
         self.height = height;
         self.size = spaceSize;
         
-        [self.leftWall setWallVisible:self.space.leftSide];
-        [self.rightWall setWallVisible:self.space.rightSide];
-        [self.upWall setWallVisible:self.space.upSide];
-        [self.downWall setWallVisible:self.space.downSide];
+        self.layer.borderWidth = 0.5f;
         
+        self.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
+        self.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
+        
+        if (self.space.type == SpaceTypeEmpty) {
+            
+        }
+        else if (self.space.type == SpaceTypeWall) {
+            self.backgroundColor = [Utils colorWithHexString:@"141414"];
+            self.layer.borderColor = [Utils colorWithHexString:@"141414"].CGColor;
+        }
+        else if (self.space.type == SpaceTypeFriendlyHome || self.space.type == SpaceTypeCapturedFriendly || self.space.type == SpaceTypeCapturedFriendlyFlag) {
+            self.backgroundColor = [Utils colorWithHexString:@"3498db"];
+            self.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
+        }
+        else if (self.space.type == SpaceTypeEnemyHome || self.space.type == SpaceTypeCapturedEnemy || self.space.type == SpaceTypeCapturedEnemyFlag) {
+            self.backgroundColor = [Utils colorWithHexString:@"e74c3c"];
+            self.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
+        }
+
 //        [self maskLayerMake:self.space.type];
     }
     

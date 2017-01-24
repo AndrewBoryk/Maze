@@ -19,7 +19,8 @@
 */
 
 + (UIColor *) boardBackgroundColor {
-    return [Utils colorWithHexString:@"0B1E30"];
+//    [Utils colorWithHexString:@"0B1E30"];
+    return [Utils colorWithHexString:@"FCFCFC"];
 }
 
 + (UIColor *) emptyWallColor {

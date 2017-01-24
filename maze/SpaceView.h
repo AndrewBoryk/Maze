@@ -7,7 +7,6 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "WallView.h"
 #import "Space.h"
 
 @interface SpaceView : UIView {
@@ -32,18 +31,6 @@
 
 /// Size for space
 @property CGFloat size;
-
-/// Wall on the space's left side
-@property (strong, nonatomic) WallView *leftWall;
-
-/// Wall on the space's right side
-@property (strong, nonatomic) WallView *rightWall;
-
-/// Wall on the space's up side
-@property (strong, nonatomic) WallView *upWall;
-
-/// Wall on the space's down side
-@property (strong, nonatomic) WallView *downWall;
 
 /// Color for the goal
 @property (strong, nonatomic) UIColor *goalColor;
