@@ -62,8 +62,11 @@
         
         [self addSubview:whiteCircle];
         [self addSubview:centerCircle];
+        
+        self.userInteractionEnabled = NO;
     }
     
     return self;
 }
+
 @end

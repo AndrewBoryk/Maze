@@ -184,65 +184,76 @@
     
     if ([Utils notNull:spaceView]) {
         if ([Utils notNull:spaceView.space]) {
-            if (playerType == ItemTypeFriendly) {
-                if (spaceView.space.enemyPercentage > 0) {
-                    spaceView.space.enemyPercentage-= (0.2f * strength);
-                }
-                else if (spaceView.space.friendlyPercentage < 1) {
-                    spaceView.space.friendlyPercentage+= (0.2f * strength);
-                }
-            }
-            else if (playerType == ItemTypeEnemy) {
-                if (spaceView.space.friendlyPercentage > 0) {
-                    spaceView.space.friendlyPercentage-= (0.2f * strength);
-                }
-                else if (spaceView.space.enemyPercentage < 1) {
-                    spaceView.space.enemyPercentage+= (0.2f * strength);
-                }
-            }
             
-            if (spaceView.space.friendlyPercentage > 1) {
-                spaceView.space.friendlyPercentage = 1;
-            }
-            else if (spaceView.space.friendlyPercentage < 0) {
-                spaceView.space.friendlyPercentage = 0;
-            }
-            
-            if (spaceView.space.enemyPercentage > 1) {
-                spaceView.space.enemyPercentage = 1;
-            }
-            else if (spaceView.space.enemyPercentage < 0) {
-                spaceView.space.enemyPercentage = 0;
-            }
-            
-            if (spaceView.space.friendlyPercentage > 0) {
-                
-                spaceView.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
-                spaceView.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
-                if (spaceView.space.friendlyPercentage == 1) {
-                    spaceView.space.type = ItemTypeFriendly;
-                }
-                else {
-                    spaceView.space.type = ItemTypeEmpty;
-                }
-                
-            }
-            else if (spaceView.space.enemyPercentage > 0) {
-                
-                spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.enemyPercentage];
-                spaceView.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
-                if (spaceView.space.enemyPercentage == 1) {
-                    spaceView.space.type = ItemTypeEnemy;
-                }
-                else {
-                    spaceView.space.type = ItemTypeEmpty;
+            NSArray *playerArray = [Game playersInSpace:spaceView.space notOfAlliance:playerType];
+            if (playerArray.count) {
+                for (Player *player in playerArray) {
+                    [Player adjustHealthOfPlayer:player by:-(20.0f*strength)];
                 }
             }
             else {
-                spaceView.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
-                spaceView.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
-                spaceView.space.type = ItemTypeEmpty;
+                if (playerType == ItemTypeFriendly) {
+                    if (spaceView.space.enemyPercentage > 0) {
+                        spaceView.space.enemyPercentage-= (0.2f * strength);
+                    }
+                    else if (spaceView.space.friendlyPercentage < 1) {
+                        spaceView.space.friendlyPercentage+= (0.2f * strength);
+                    }
+                }
+                else if (playerType == ItemTypeEnemy) {
+                    if (spaceView.space.friendlyPercentage > 0) {
+                        spaceView.space.friendlyPercentage-= (0.2f * strength);
+                    }
+                    else if (spaceView.space.enemyPercentage < 1) {
+                        spaceView.space.enemyPercentage+= (0.2f * strength);
+                    }
+                }
+                
+                if (spaceView.space.friendlyPercentage > 1) {
+                    spaceView.space.friendlyPercentage = 1;
+                }
+                else if (spaceView.space.friendlyPercentage < 0) {
+                    spaceView.space.friendlyPercentage = 0;
+                }
+                
+                if (spaceView.space.enemyPercentage > 1) {
+                    spaceView.space.enemyPercentage = 1;
+                }
+                else if (spaceView.space.enemyPercentage < 0) {
+                    spaceView.space.enemyPercentage = 0;
+                }
+                
+                if (spaceView.space.friendlyPercentage > 0) {
+                    
+                    spaceView.backgroundColor = [[Utils colorWithHexString:@"3498db"] colorWithAlphaComponent:spaceView.space.friendlyPercentage];
+                    spaceView.layer.borderColor = [Utils colorWithHexString:@"2980b9"].CGColor;
+                    if (spaceView.space.friendlyPercentage == 1) {
+                        spaceView.space.type = ItemTypeFriendly;
+                    }
+                    else {
+                        spaceView.space.type = ItemTypeEmpty;
+                    }
+                    
+                }
+                else if (spaceView.space.enemyPercentage > 0) {
+                    
+                    spaceView.backgroundColor = [[Utils colorWithHexString:@"e74c3c"] colorWithAlphaComponent:spaceView.space.enemyPercentage];
+                    spaceView.layer.borderColor = [Utils colorWithHexString:@"c0392b"].CGColor;
+                    if (spaceView.space.enemyPercentage == 1) {
+                        spaceView.space.type = ItemTypeEnemy;
+                    }
+                    else {
+                        spaceView.space.type = ItemTypeEmpty;
+                    }
+                }
+                else {
+                    spaceView.backgroundColor = [Utils colorWithHexString:@"ecf0f1"];
+                    spaceView.layer.borderColor = [Utils colorWithHexString:@"bdc3c7"].CGColor;
+                    spaceView.space.type = ItemTypeEmpty;
+                }
             }
+            
+            
             
 //            [SpaceView adjustSpacePercentage: spaceView];
         }

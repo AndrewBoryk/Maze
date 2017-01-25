@@ -30,8 +30,14 @@
 /// State of player when in AI mode
 @property PlayerState state;
 
+/// Health of the player
+@property float health;
+
+/// Number of the player
+@property int playerNumber;
+
 /// Initializes a player
-- (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position;
+- (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position andPlayerNumber: (int)playerNumber;
 
 /// Determines which space would be most beneficial for the user to interact
 - (Space *) determineBestSpaceToInteract;
@@ -41,6 +47,9 @@
 
 /// End the player moving with AI
 - (void) endAIMovements;
+
+/// Adjust the health of the player
++ (void) adjustHealthOfPlayer:(Player *)player by:(float) healthAdjustment;
 
 @end
 

@@ -20,8 +20,14 @@
 /// Array holding friendly players
 @property (strong, nonatomic) NSMutableArray *friendlyArray;
 
+/// Array holding friendly bases
+@property (strong, nonatomic) NSMutableArray *friendlyHomeArray;
+
 /// Array holding enemy players
 @property (strong, nonatomic) NSMutableArray *enemyArray;
+
+/// Array holding enemy bases
+@property (strong, nonatomic) NSMutableArray *enemyHomeArray;
 
 /// Dictionary containing players
 @property NSMutableArray *playerViewArray;
@@ -62,4 +68,12 @@
 /// Remove a player from the board
 - (void) removePlayer: (Player *) player;
 
+/// Determines if there are any players in the space
++ (NSArray *)playersInSpace:(Space *)space notOfAlliance:(ItemType) type;
+
+/// Returns playerview for a player
++ (PlayerView *)playerViewForPlayer: (Player *)player;
+
+/// Returns home space for player
++ (Space *)homeForPlayer:(Player *)player;
 @end

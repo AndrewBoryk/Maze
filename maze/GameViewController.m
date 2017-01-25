@@ -35,6 +35,9 @@
     
     /// Manages motion
     CMMotionManager *manager;
+    
+    /// Index of player
+    int currentPlayerIndex;
 }
 
 - (void)viewDidLoad {
@@ -57,12 +60,6 @@
     
     [Game setCurrentBoard:mainBoard];
     
-    testPlayerBlue = [[Player alloc] initWithType:ItemTypeFriendly playerID:@"12345" withPosition:CGPointMake([Game currentBoard].width / 2, [Game currentBoard].height - 2)];
-    testPlayerBlue.delegate = self;
-    
-    testPlayerRed = [[Player alloc] initWithType:ItemTypeEnemy playerID:@"12346" withPosition:CGPointMake([Game currentBoard].width / 2, 1)];
-    
-    [Game setCurrentPlayer:testPlayerBlue];
     
     [self setSwitchBackground];
     
@@ -71,29 +68,54 @@
     
     [Game setCurrentBoardView:mainBoardView];
     
-    Space *friendlyHome = [[Space alloc] initWithType:ItemTypeFriendly position:CGPointMake([Game currentBoard].width / 2, [Game currentBoard].height - 2)];
-    friendlyHome.isBase = YES;
+    for (int i = 1; i < 7; i++) {
+        CGPoint position = CGPointMake(((int)[Game currentBoard].width / 7) * i, [Game currentBoard].height - 2);
+        Space *home = [[Space alloc] initWithType:ItemTypeFriendly position:position];
+        home.isBase = YES;
+        
+        [[Game currentBoard] replacePoint:home.position withSpace:home];
+        [[[Game sharedInstance] friendlyHomeArray] addObject:home];
+        
+        Player *testPlayer = [[Player alloc] initWithType:ItemTypeFriendly playerID:[NSString stringWithFormat:@"0123%i", i] withPosition:position andPlayerNumber:i-1];
+        testPlayer.delegate = self;
+        
+        if (i == 4) {
+            [Game setCurrentPlayer:testPlayer];
+        }
+        
+        
+        [[Game sharedInstance] addPlayer:testPlayer];
+    }
     
-    Space *enemyHome = [[Space alloc] initWithType:ItemTypeEnemy position:CGPointMake([Game currentBoard].width / 2, 1)];
-    enemyHome.isBase = YES;
+    for (int i = 1; i < 7; i++) {
+        CGPoint position = CGPointMake(((int)[Game currentBoard].width / 7) * i, 1);
+        Space *home = [[Space alloc] initWithType:ItemTypeEnemy position:position];
+        home.isBase = YES;
+        
+        [[[Game sharedInstance] enemyHomeArray] addObject:home];
+        [[Game currentBoard] replacePoint:home.position withSpace:home];
+        
+        Player *testPlayer = [[Player alloc] initWithType:ItemTypeEnemy playerID:[NSString stringWithFormat:@"1234%i", i] withPosition:position andPlayerNumber:i-1];
+        testPlayer.delegate = self;
+        
+        [[Game sharedInstance] addPlayer:testPlayer];
+    }
     
-    Space *emptyFlagOne = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Game currentBoard].width / 2, [Game currentBoard].height/2)];
+    
+    
+    Space *emptyFlagOne = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake((int)([Game currentBoard].width / 4.0f), (int)([Game currentBoard].height/4.0f))];
     emptyFlagOne.isFlag = YES;
     
     Space *emptyFlagTwo = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Game currentBoard].width / 2 + 2, [Game currentBoard].height/2)];
     emptyFlagTwo.isFlag = YES;
     
-    Space *emptyFlagThree = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Game currentBoard].width / 2 - 2, [Game currentBoard].height/2)];
+    Space *emptyFlagThree = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake((int)([Game currentBoard].width/4.0f*3.0f), (int)([Game currentBoard].height/4.0f*3.0f))];
     emptyFlagThree.isFlag = YES;
     
-    [[Game currentBoard] replacePoint:friendlyHome.position withSpace:friendlyHome];
-    [[Game currentBoard] replacePoint:enemyHome.position withSpace:enemyHome];
+    
     [[Game currentBoardView] setObjectiveOne:emptyFlagOne];
     [[Game currentBoardView] setObjectiveTwo:emptyFlagTwo];
     [[Game currentBoardView] setObjectiveThree:emptyFlagThree];
-    
-    [[Game sharedInstance] addPlayer:testPlayerBlue];
-    [[Game sharedInstance] addPlayer:testPlayerRed];
     
     
     
@@ -149,7 +171,15 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [testPlayerBlue startAIMovements];
+    for (Player *player in [[Game sharedInstance] friendlyArray]) {
+        [player startAIMovements];
+    }
+    
+    //[(Player *)[[[Game sharedInstance] friendlyArray] objectAtIndex:3] endAIMovements];
+    
+    for (Player *player in [[Game sharedInstance] enemyArray]) {
+        [player startAIMovements];
+    }
 }
 
 - (BOOL)shouldAutorotate {
@@ -309,6 +339,5 @@ int gcd (int a, int b){
         [self setScrollOffset];
     }
 }
-
 
 @end

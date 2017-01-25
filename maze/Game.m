@@ -19,6 +19,8 @@
         self.friendlyArray = [[NSMutableArray alloc] init];
         self.enemyArray = [[NSMutableArray alloc] init];
         self.playerViewArray = [[NSMutableArray alloc] init];
+        self.friendlyHomeArray = [[NSMutableArray alloc] init];
+        self.enemyHomeArray = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -108,15 +110,14 @@
     }
 }
 
-- (void) removePlayer: (NSString *) playerID {
-    if ([Utils notNull:[Game currentBoard]] && [Utils notNull:playerID]) {
+- (void) removePlayer: (Player *) player {
+    if ([Utils notNull:[Game currentBoard]] && [Utils notNull:player] && [Utils notNull:player.playerID]) {
         
         BOOL removed = NO;
         
-        
         for (Player *tempPlayer in [[Game sharedInstance] friendlyArray]) {
             if ([Utils notNull:tempPlayer.playerID]) {
-                if ([tempPlayer.playerID isEqualToString:playerID]) {
+                if ([tempPlayer.playerID isEqualToString:player.playerID]) {
                     [[[Game sharedInstance] friendlyArray] removeObject:tempPlayer];
                     removed = YES;
                     break;
@@ -127,7 +128,7 @@
         if (!removed) {
             for (Player *tempPlayer in [[Game sharedInstance] enemyArray]) {
                 if ([Utils notNull:tempPlayer.playerID]) {
-                    if ([tempPlayer.playerID isEqualToString:playerID]) {
+                    if ([tempPlayer.playerID isEqualToString:player.playerID]) {
                         [[[Game sharedInstance] enemyArray] removeObject:tempPlayer];
                         removed = YES;
                         break;
@@ -139,7 +140,7 @@
         for (PlayerView *tempPlayerView in [[Game sharedInstance] playerViewArray]) {
             if ([Utils notNull:tempPlayerView.player]) {
                 if ([Utils notNull:tempPlayerView.player.playerID]) {
-                    if ([tempPlayerView.player.playerID isEqualToString:playerID]) {
+                    if ([tempPlayerView.player.playerID isEqualToString:player.playerID]) {
                         [[[Game sharedInstance] playerViewArray] removeObject:tempPlayerView];
                         [tempPlayerView removeFromSuperview];
                         
@@ -164,7 +165,7 @@
                             if ([tempPlayerView.player.playerID isEqualToString:player.playerID]) {
                                 SpaceView *tempSpaceView = [[Game currentBoardView] spaceViewForPoint:player.position];
                                 tempPlayerView.center = tempSpaceView.center;
-                                
+                                [tempPlayerView.superview bringSubviewToFront:tempPlayerView]; 
                                 break;
                             }
                         }
@@ -177,4 +178,63 @@
     }
 }
 
++ (NSArray *)playersInSpace:(Space *)space notOfAlliance:(ItemType)type {
+    NSMutableArray *players = [[NSMutableArray alloc] init];
+    
+    if (type == ItemTypeFriendly) {
+        for (Player *player in [[Game sharedInstance] enemyArray]) {
+            if ([Utils notNull:player]) {
+                if (CGPointEqualToPoint(player.position, space.position)) {
+                    [players addObject:player];
+                }
+            }
+        }
+    }
+    else if (type == ItemTypeEnemy) {
+        for (Player *player in [[Game sharedInstance] friendlyArray]) {
+            if ([Utils notNull:player]) {
+                if (CGPointEqualToPoint(player.position, space.position)) {
+                    [players addObject:player];
+                }
+            }
+        }
+    }
+    
+    return players;
+}
+
++ (PlayerView *)playerViewForPlayer: (Player *)player {
+    if ([Utils notNull:player.playerID]) {
+        for (PlayerView *playerView in [[Game sharedInstance] playerViewArray]) {
+            if ([Utils notNull:playerView]) {
+                if ([Utils notNull:playerView.player]) {
+                    if ([Utils notNull:playerView.player.playerID]) {
+                        if ([playerView.player.playerID isEqualToString:player.playerID]) {
+                            return playerView;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    return nil;
+}
+
++ (Space *)homeForPlayer:(Player *)player {
+    if (player.type == ItemTypeFriendly) {
+        if (player.playerNumber < [[[Game sharedInstance] friendlyHomeArray] count]) {
+            return [[[Game sharedInstance] friendlyHomeArray] objectAtIndex:player.playerNumber];
+        }
+    }
+    else if (player.type == ItemTypeEnemy) {
+        if (player.playerNumber < [[[Game sharedInstance] enemyHomeArray] count]) {
+            return [[[Game sharedInstance] enemyHomeArray] objectAtIndex:player.playerNumber];
+        }
+    }
+    
+    
+    return nil;
+}
 @end

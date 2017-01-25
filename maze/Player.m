@@ -19,14 +19,23 @@
     NSTimer *artificialIntelligenceTimer;
 }
      
-- (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position {
+- (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position andPlayerNumber: (int)playerNumber {
     self = [super init];
     
     if (self) {
         self.playerID = playerID;
         self.type = type;
-        self.position = position;
+        self.playerNumber = playerNumber;
+        Space *homeSpace = [Game homeForPlayer:self];
+        if ([Utils notNull:homeSpace]) {
+            self.position = homeSpace.position;
+        }
+        else {
+            self.position = position;
+        }
+        
         self.state = StateAttacking;
+        self.health = 100.0f;
     }
     
     return self;
@@ -92,8 +101,8 @@
 }
 
 - (Space *) determineBestSpaceToInteract {
-    if ([self respondsToSelector:@selector(determineDesitnationForPlayer:)]) {
-        Space *objectiveSpace = [self determineDesitnationForPlayer:self];
+    if ([self respondsToSelector:@selector(determineDestinationForPlayer:)]) {
+        Space *objectiveSpace = [self determineDestinationForPlayer:self];
         
         if ([Utils notNull:objectiveSpace]) {
             NSArray *possibilityArray = [self determinePossibleMovementsForPlayer:self];
@@ -103,25 +112,28 @@
             float bestValue = 0;
             for (Space *testSpace in possibilityArray) {
                 
-                if (testSpace.isFlag && testSpace.type != self.type) {
+                if ([[Game playersInSpace:testSpace notOfAlliance:self.type] count]) {
+                    return testSpace;
+                }
+                else if (testSpace.isFlag && testSpace.type != self.type) {
                     return testSpace;
                 }
                 else {
                     float movementValue = 1;
                     if (self.type == ItemTypeFriendly) {
                         if (testSpace.enemyPercentage > 0) {
-                            movementValue = ceilf(testSpace.enemyPercentage/0.2f) + 6;
+                            movementValue = testSpace.enemyPercentage + 1;
                         }
                         else {
-                            movementValue = ceilf((1.0f-testSpace.friendlyPercentage)/2.0f) + 1;
+                            movementValue = (1.0f-testSpace.friendlyPercentage) + 1;
                         }
                     }
                     else if (self.type == ItemTypeEnemy) {
                         if (testSpace.friendlyPercentage > 0) {
-                            movementValue = ceilf(testSpace.friendlyPercentage/0.2f) + 6;
+                            movementValue = testSpace.friendlyPercentage + 1;
                         }
                         else {
-                            movementValue = ceilf((1.0f-testSpace.enemyPercentage)/2.0f) + 1;
+                            movementValue = (1.0f-testSpace.enemyPercentage) + 1;
                         }
                     }
                     
@@ -154,7 +166,7 @@
     
 }
 
-- (Space *) determineDesitnationForPlayer: (Player *)player {
+- (Space *) determineDestinationForPlayer: (Player *)player {
     int distanceObjectiveOne = 0;
     int distanceObjectiveTwo = 0;
     int distanceObjectiveThree = 0;
@@ -240,6 +252,42 @@
     }
 }
 
++ (void) adjustHealthOfPlayer:(Player *)player by:(float) healthAdjustment {
+    player.health+= healthAdjustment;
+    
+    PlayerView *playerView = [Game playerViewForPlayer:player];
+    
+    [UIView animateWithDuration:0.1f animations:^{
+        playerView.alpha = player.health/100.0f;
+    }];
+    
+    if (player.health <= 0) {
+        [[Game sharedInstance] removePlayer:player];
+        player.health = 100.0f;
+        
+        Space *homeSpace = [Game homeForPlayer:player];
+        if ([Utils notNull:homeSpace]) {
+            player.position = homeSpace.position;
+        }
+        else {
+            if (player.type == ItemTypeFriendly) {
+                player.position = CGPointMake([Game currentBoard].width / 2 + 2, [Game currentBoard].height- 1);
+            }
+            else if (player.type == ItemTypeEnemy) {
+                player.position = CGPointMake([Game currentBoard].width / 2 + 2, 1);
+            }
+        }
+        
+        [[Game sharedInstance] addPlayer:player];
+        
+        if ([player.delegate respondsToSelector:@selector(didMoveAIPlayer:)]) {
+            [player.delegate didMoveAIPlayer:player];
+        }
+    }
+    else {
+        playerView.player = player;
+    }
+}
 @end
 
 
