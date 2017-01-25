@@ -9,6 +9,7 @@
 #import "PlayerView.h"
 #import "SpaceView.h"
 #import "BoardView.h"
+#import "Game.h"
 
 @implementation PlayerView {
     UIView *whiteCircle;
@@ -53,7 +54,7 @@
         centerCircle.layer.cornerRadius = centerCircle.frame.size.width / 2.0f;
         
         
-        SpaceView *tempSpaceView = [[BoardView currentBoardView] spaceViewForPoint: player.position];
+        SpaceView *tempSpaceView = [[Game currentBoardView] spaceViewForPoint: player.position];
         self.center = tempSpaceView.center;
         
         whiteCircle.center = CGPointMake(self.frame.size.width/2.0f, self.frame.size.height/2.0f);

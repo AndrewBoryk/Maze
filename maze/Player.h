@@ -7,7 +7,8 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "Space.h"
+
+@class Space;
 
 @protocol PathManagerDataSource;
 @protocol PathManagerDelegate;
@@ -17,18 +18,6 @@
 @property (weak, nonatomic) id<PathManagerDataSource> dataSource;
 @property (weak, nonatomic) id<PathManagerDelegate> delegate;
 
-/// Current player instance
-+ (id)sharedInstance;
-
-/// Set the current player
-+ (void) setCurrentPlayer: (Player *) player;
-
-/// Return the current player
-+ (Player *) currentPlayer;
-
-/// Current player
-@property (strong, nonatomic) Player *currentPlayerInstance;
-
 /// ID of player
 @property (strong, nonatomic) NSString *playerID;
 
@@ -37,6 +26,9 @@
 
 /// Type of player
 @property ItemType type;
+
+/// State of player when in AI mode
+@property PlayerState state;
 
 /// Initializes a player
 - (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position;

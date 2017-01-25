@@ -11,6 +11,7 @@
 #import "Player.h"
 #import "BoardView.h"
 #import "Board.h"
+#import "Game.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
@@ -151,16 +152,16 @@
 
 - (void) handleInteraction: (UITapGestureRecognizer *) gesture {
     if (self.space.type != ItemTypeWall && !self.space.isBase) {
-        double absoluteX = fabs((self.space.position.x - [Player currentPlayer].position.x));
-        double absoluteY = fabs((self.space.position.y - [Player currentPlayer].position.y));
+        double absoluteX = fabs((self.space.position.x - [Game currentPlayer].position.x));
+        double absoluteY = fabs((self.space.position.y - [Game currentPlayer].position.y));
         
         if (absoluteX <= 2 && absoluteY <= 2) {
             if (!(absoluteX == 2 && absoluteY == 2)) {
                 if (absoluteX == 2 || absoluteY == 2) {
-                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] withStrength:0.5f];
+                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Game currentPlayer] type] withStrength:0.5f];
                 }
                 else {
-                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Player currentPlayer] type] withStrength:1.0f];
+                    [SpaceView adjustSpaceAtPosition:self.space.position forType:[[Game currentPlayer] type] withStrength:1.0f];
                 }
                 
             }
@@ -179,7 +180,7 @@
 }
 
 + (void) adjustSpaceAtPosition: (CGPoint) position forType: (ItemType) playerType withStrength: (float) strength {
-    SpaceView *spaceView = [[BoardView currentBoardView] spaceViewForPoint:position];
+    SpaceView *spaceView = [[Game currentBoardView] spaceViewForPoint:position];
     
     if ([Utils notNull:spaceView]) {
         if ([Utils notNull:spaceView.space]) {
@@ -248,17 +249,17 @@
     }
     
     
-    if (![Utils notNull:[BoardView currentBoardView].spaces]) {
-        [BoardView currentBoardView].spaces = [[NSMutableDictionary alloc] init];
+    if (![Utils notNull:[Game currentBoardView].spaces]) {
+        [Game currentBoardView].spaces = [[NSMutableDictionary alloc] init];
     }
     
     NSString *spaceKey = [NSString stringWithFormat:@"%i:%i", (int)position.x, (int)position.y];
     
     if ([Utils notNull:spaceKey]) {
-        [[BoardView currentBoardView].spaces setObject:spaceView forKey:spaceKey];
+        [[Game currentBoardView].spaces setObject:spaceView forKey:spaceKey];
     }
     
-    [[BoardView currentBoardView].board adjustSpace:spaceView.space];
+    [[Game currentBoardView].board adjustSpace:spaceView.space];
     
 }
 

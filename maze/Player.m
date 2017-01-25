@@ -10,30 +10,13 @@
 #import "Board.h"
 #import "BoardView.h"
 #import "SpaceView.h"
-
+#import "Game.h"
+#import "Space.h"
 
 @implementation Player {
     
     /// Timer for AI movements
     NSTimer *artificialIntelligenceTimer;
-}
-
-+ (id)sharedInstance {
-    static Player *sharedMyInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedMyInstance = [[self alloc] init];
-        
-    });
-    return sharedMyInstance;
-}
-
-+ (void) setCurrentPlayer: (Player *) player{
-    [[Player sharedInstance] setCurrentPlayerInstance:player];
-}
-
-+ (Player *) currentPlayer {
-    return [[Player sharedInstance] currentPlayerInstance];
 }
      
 - (instancetype) initWithType:(ItemType) type playerID:(NSString *)playerID withPosition: (CGPoint) position {
@@ -43,6 +26,7 @@
         self.playerID = playerID;
         self.type = type;
         self.position = position;
+        self.state = StateAttacking;
     }
     
     return self;
@@ -50,12 +34,12 @@
 
 - (NSArray *) determinePossibleMovementsForPlayer: (Player *)player {
     CGPoint position = player.position;
-    NSInteger boardWidth = [[Board currentBoard] width];
-    NSInteger boardHeight = [[Board currentBoard] width];
+    NSInteger boardWidth = [[Game currentBoard] width];
+    NSInteger boardHeight = [[Game currentBoard] width];
     
     NSMutableArray *possibilityArray = [[NSMutableArray alloc] init];
     if ((position.x - 1) >= 0) {
-        Space *leftSpace = [[Board currentBoard] spaceForPoint:CGPointMake(position.x-1, position.y)];
+        Space *leftSpace = [[Game currentBoard] spaceForPoint:CGPointMake(position.x-1, position.y)];
         if ([Utils notNull:leftSpace]) {
             if (leftSpace.type != ItemTypeWall && [self isNotEnemyBase:leftSpace player:player]) {
                 [possibilityArray addObject:leftSpace];
@@ -65,7 +49,7 @@
     }
     
     if ((position.x + 1) < boardWidth) {
-        Space *rightSpace = [[Board currentBoard] spaceForPoint:CGPointMake(position.x+1, position.y)];
+        Space *rightSpace = [[Game currentBoard] spaceForPoint:CGPointMake(position.x+1, position.y)];
         if ([Utils notNull:rightSpace]) {
             if (rightSpace.type != ItemTypeWall && [self isNotEnemyBase:rightSpace player:player]) {
                 [possibilityArray addObject:rightSpace];
@@ -75,7 +59,7 @@
     }
     
     if ((position.y - 1) >= 0) {
-        Space *upSpace = [[Board currentBoard] spaceForPoint:CGPointMake(position.x, position.y-1)];
+        Space *upSpace = [[Game currentBoard] spaceForPoint:CGPointMake(position.x, position.y-1)];
         if ([Utils notNull:upSpace]) {
             if (upSpace.type != ItemTypeWall && [self isNotEnemyBase:upSpace player:player]) {
                 [possibilityArray addObject:upSpace];
@@ -85,7 +69,7 @@
     }
     
     if ((position.y + 1) < boardHeight) {
-        Space *downSpace = [[Board currentBoard] spaceForPoint:CGPointMake(position.x, position.y+1)];
+        Space *downSpace = [[Game currentBoard] spaceForPoint:CGPointMake(position.x, position.y+1)];
         if ([Utils notNull:downSpace]) {
             if (downSpace.type != ItemTypeWall && [self isNotEnemyBase:downSpace player:player]) {
                 [possibilityArray addObject:downSpace];
@@ -175,24 +159,24 @@
     int distanceObjectiveTwo = 0;
     int distanceObjectiveThree = 0;
     
-    if ([Utils notNull:[[BoardView currentBoardView] flagOne]]) {
-        if ([[BoardView currentBoardView] flagOne].space.type != player.type) {
-            Space *objectiveSpace = [[BoardView currentBoardView] flagOne].space;
+    if ([Utils notNull:[[Game currentBoardView] flagOne]]) {
+        if ([[Game currentBoardView] flagOne].space.type != player.type) {
+            Space *objectiveSpace = [[Game currentBoardView] flagOne].space;
             distanceObjectiveOne = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
         }
     }
     
-    if ([Utils notNull:[[BoardView currentBoardView] flagTwo]]) {
-        if ([[BoardView currentBoardView] flagTwo].space.type != player.type) {
-            Space *objectiveSpace = [[BoardView currentBoardView] flagTwo].space;
+    if ([Utils notNull:[[Game currentBoardView] flagTwo]]) {
+        if ([[Game currentBoardView] flagTwo].space.type != player.type) {
+            Space *objectiveSpace = [[Game currentBoardView] flagTwo].space;
             distanceObjectiveTwo = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
         }
     }
     
     
-    if ([Utils notNull:[[BoardView currentBoardView] flagThree]]) {
-        if ([[BoardView currentBoardView] flagThree].space.type != player.type) {
-            Space *objectiveSpace = [[BoardView currentBoardView] flagThree].space;
+    if ([Utils notNull:[[Game currentBoardView] flagThree]]) {
+        if ([[Game currentBoardView] flagThree].space.type != player.type) {
+            Space *objectiveSpace = [[Game currentBoardView] flagThree].space;
             distanceObjectiveThree = abs((int)objectiveSpace.position.x - (int)player.position.x) + abs((int)objectiveSpace.position.y - (int)player.position.y);
         }
     }
@@ -201,29 +185,29 @@
     if (distanceObjectiveOne != 0) {
         if (distanceObjectiveTwo < distanceObjectiveOne && distanceObjectiveTwo != 0) {
             if (distanceObjectiveThree < distanceObjectiveTwo && distanceObjectiveThree != 0) {
-                return [[BoardView currentBoardView] flagThree].space;
+                return [[Game currentBoardView] flagThree].space;
             }
             else {
-                return [[BoardView currentBoardView] flagTwo].space;
+                return [[Game currentBoardView] flagTwo].space;
             }
         }
         else if (distanceObjectiveThree < distanceObjectiveOne && distanceObjectiveThree != 0) {
-            return [[BoardView currentBoardView] flagThree].space;
+            return [[Game currentBoardView] flagThree].space;
         }
         else {
-            return [[BoardView currentBoardView] flagOne].space;
+            return [[Game currentBoardView] flagOne].space;
         }
     }
     else if (distanceObjectiveTwo != 0) {
         if (distanceObjectiveThree < distanceObjectiveTwo && distanceObjectiveThree != 0) {
-            return [[BoardView currentBoardView] flagThree].space;
+            return [[Game currentBoardView] flagThree].space;
         }
         else {
-            return [[BoardView currentBoardView] flagTwo].space;
+            return [[Game currentBoardView] flagTwo].space;
         }
     }
     else if (distanceObjectiveThree != 0) {
-        return [[BoardView currentBoardView] flagThree].space;
+        return [[Game currentBoardView] flagThree].space;
     }
     
     return nil;
@@ -244,7 +228,7 @@
     
     if (interactionSpace.type == self.type) {
         [UIView animateWithDuration:0.2f animations:^{
-            [[BoardView currentBoardView] movePlayer:self toPosition:interactionSpace.position];
+            [[Game sharedInstance] movePlayer:self toPosition:interactionSpace.position];
         } completion:^(BOOL finished) {
             if ([self.delegate respondsToSelector:@selector(didMoveAIPlayer:)]) {
                 [self.delegate didMoveAIPlayer: self];

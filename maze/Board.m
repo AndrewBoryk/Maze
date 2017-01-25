@@ -9,6 +9,8 @@
 #import "Board.h"
 #import "SpaceView.h"
 #import "BoardView.h"
+#import "Game.h"
+#import "Space.h"
 
 @implementation Board
 
@@ -17,8 +19,6 @@
     
     if (self) {
         self.boardArray = [[NSMutableArray alloc] init];
-        self.playerArray = [[NSMutableArray alloc] init];
-        self.playerViewArray = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -162,7 +162,7 @@
                 Space *space = [[Space alloc] initWithType:type position:point];
                 [rowArray setObject:space atIndexedSubscript:point.x];
                 [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
-                [[BoardView currentBoardView] replaceSpace:space];
+                [[Game currentBoardView] replaceSpace:space];
                 [self checkAdjustedObjective: space];
                 return YES;
             }
@@ -180,7 +180,7 @@
             if (point.x < rowArray.count) {
                 [rowArray setObject:space atIndexedSubscript:point.x];
                 [self.boardArray setObject:rowArray atIndexedSubscript:point.y];
-                [[BoardView currentBoardView] replaceSpace:space];
+                [[Game currentBoardView] replaceSpace:space];
                 [self checkAdjustedObjective: space];
                 return YES;
             }
@@ -203,55 +203,35 @@
     [Utils printString:@"-------"];
 }
 
-
-
-+ (id)sharedInstance {
-    static Board *sharedMyInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedMyInstance = [[self alloc] init];
-        
-    });
-    return sharedMyInstance;
-}
-
-+ (void) setCurrentBoard:(Board *)board {
-    [[Board sharedInstance] setCurrentBoardInstance:board];
-}
-
-+ (Board *) currentBoard {
-    return [[Board sharedInstance] currentBoardInstance];
-}
-
 - (void) checkAdjustedObjective: (Space *) space {
     if (space.isFlag) {
-        if ([Utils notNull:[BoardView currentBoardView]]) {
-            if ([Utils notNull:[[BoardView currentBoardView] flagOne]]) {
-                if ([Utils notNull:[[[BoardView currentBoardView] flagOne] space]]) {
-                    if ([[[[BoardView currentBoardView] flagOne] space] position].x == space.position.x && [[[[BoardView currentBoardView] flagOne] space] position].y == space.position.y) {
-                        if ([[[BoardView currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
-                            [[[BoardView currentBoardView] delegate] adjustedObjective:1 withSpaceView:[[BoardView currentBoardView] flagOne]];
+        if ([Utils notNull:[Game currentBoardView]]) {
+            if ([Utils notNull:[[Game currentBoardView] flagOne]]) {
+                if ([Utils notNull:[[[Game currentBoardView] flagOne] space]]) {
+                    if ([[[[Game currentBoardView] flagOne] space] position].x == space.position.x && [[[[Game currentBoardView] flagOne] space] position].y == space.position.y) {
+                        if ([[[Game currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
+                            [[[Game currentBoardView] delegate] adjustedObjective:1 withSpaceView:[[Game currentBoardView] flagOne]];
                         }
                     }
                 }
             }
             
-            if ([Utils notNull:[[BoardView currentBoardView] flagTwo]]) {
-                if ([Utils notNull:[[[BoardView currentBoardView] flagTwo] space]]) {
-                    if ([[[[BoardView currentBoardView] flagTwo] space] position].x == space.position.x && [[[[BoardView currentBoardView] flagTwo] space] position].y == space.position.y) {
-                        if ([[[BoardView currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
-                            [[[BoardView currentBoardView] delegate] adjustedObjective:2 withSpaceView:[[BoardView currentBoardView] flagTwo]];
+            if ([Utils notNull:[[Game currentBoardView] flagTwo]]) {
+                if ([Utils notNull:[[[Game currentBoardView] flagTwo] space]]) {
+                    if ([[[[Game currentBoardView] flagTwo] space] position].x == space.position.x && [[[[Game currentBoardView] flagTwo] space] position].y == space.position.y) {
+                        if ([[[Game currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
+                            [[[Game currentBoardView] delegate] adjustedObjective:2 withSpaceView:[[Game currentBoardView] flagTwo]];
                         }
                     }
                 }
             }
             
             
-            if ([Utils notNull:[[BoardView currentBoardView] flagThree]]) {
-                if ([Utils notNull:[[[BoardView currentBoardView] flagThree] space]]) {
-                    if ([[[[BoardView currentBoardView] flagThree] space] position].x == space.position.x && [[[[BoardView currentBoardView] flagThree] space] position].y == space.position.y) {
-                        if ([[[BoardView currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
-                            [[[BoardView currentBoardView] delegate] adjustedObjective:3 withSpaceView:[[BoardView currentBoardView] flagThree]];
+            if ([Utils notNull:[[Game currentBoardView] flagThree]]) {
+                if ([Utils notNull:[[[Game currentBoardView] flagThree] space]]) {
+                    if ([[[[Game currentBoardView] flagThree] space] position].x == space.position.x && [[[[Game currentBoardView] flagThree] space] position].y == space.position.y) {
+                        if ([[[Game currentBoardView] delegate] respondsToSelector:@selector(adjustedObjective:withSpaceView:)]) {
+                            [[[Game currentBoardView] delegate] adjustedObjective:3 withSpaceView:[[Game currentBoardView] flagThree]];
                         }
                     }
                 }

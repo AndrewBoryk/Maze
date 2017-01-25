@@ -12,6 +12,9 @@
 
 #import "SpaceView.h"
 #import <CoreMotion/CoreMotion.h>
+#import "Game.h"
+#import "Space.h"
+
 
 @implementation GameViewController  {
     Player *testPlayerBlue;
@@ -52,49 +55,49 @@
     Board *mainBoard = [[Board alloc] initWithWidth:21 height:21];
 
     
-    [Board setCurrentBoard:mainBoard];
+    [Game setCurrentBoard:mainBoard];
     
-    testPlayerBlue = [[Player alloc] initWithType:ItemTypeFriendly playerID:@"12345" withPosition:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
-    testPlayerBlue.dataSource = self;
+    testPlayerBlue = [[Player alloc] initWithType:ItemTypeFriendly playerID:@"12345" withPosition:CGPointMake([Game currentBoard].width / 2, [Game currentBoard].height - 2)];
+    testPlayerBlue.delegate = self;
     
-    testPlayerRed = [[Player alloc] initWithType:ItemTypeEnemy playerID:@"12346" withPosition:CGPointMake([Board currentBoard].width / 2, 1)];
+    testPlayerRed = [[Player alloc] initWithType:ItemTypeEnemy playerID:@"12346" withPosition:CGPointMake([Game currentBoard].width / 2, 1)];
     
-    [Player setCurrentPlayer:testPlayerBlue];
+    [Game setCurrentPlayer:testPlayerBlue];
     
     [self setSwitchBackground];
     
     BoardView *mainBoardView = [[BoardView alloc] initWithBoard:mainBoard];
     mainBoardView.delegate = self;
     
-    [BoardView setCurrentBoardView:mainBoardView];
+    [Game setCurrentBoardView:mainBoardView];
     
-    Space *friendlyHome = [[Space alloc] initWithType:ItemTypeFriendly position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height - 2)];
+    Space *friendlyHome = [[Space alloc] initWithType:ItemTypeFriendly position:CGPointMake([Game currentBoard].width / 2, [Game currentBoard].height - 2)];
     friendlyHome.isBase = YES;
     
-    Space *enemyHome = [[Space alloc] initWithType:ItemTypeEnemy position:CGPointMake([Board currentBoard].width / 2, 1)];
+    Space *enemyHome = [[Space alloc] initWithType:ItemTypeEnemy position:CGPointMake([Game currentBoard].width / 2, 1)];
     enemyHome.isBase = YES;
     
-    Space *emptyFlagOne = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Board currentBoard].width / 2, [Board currentBoard].height/2)];
+    Space *emptyFlagOne = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Game currentBoard].width / 2, [Game currentBoard].height/2)];
     emptyFlagOne.isFlag = YES;
     
-    Space *emptyFlagTwo = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Board currentBoard].width / 2 + 2, [Board currentBoard].height/2)];
+    Space *emptyFlagTwo = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Game currentBoard].width / 2 + 2, [Game currentBoard].height/2)];
     emptyFlagTwo.isFlag = YES;
     
-    Space *emptyFlagThree = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Board currentBoard].width / 2 - 2, [Board currentBoard].height/2)];
+    Space *emptyFlagThree = [[Space alloc] initWithType:ItemTypeEmpty position:CGPointMake([Game currentBoard].width / 2 - 2, [Game currentBoard].height/2)];
     emptyFlagThree.isFlag = YES;
     
-    [[Board currentBoard] replacePoint:friendlyHome.position withSpace:friendlyHome];
-    [[Board currentBoard] replacePoint:enemyHome.position withSpace:enemyHome];
-    [[BoardView currentBoardView] setObjectiveOne:emptyFlagOne];
-    [[BoardView currentBoardView] setObjectiveTwo:emptyFlagTwo];
-    [[BoardView currentBoardView] setObjectiveThree:emptyFlagThree];
+    [[Game currentBoard] replacePoint:friendlyHome.position withSpace:friendlyHome];
+    [[Game currentBoard] replacePoint:enemyHome.position withSpace:enemyHome];
+    [[Game currentBoardView] setObjectiveOne:emptyFlagOne];
+    [[Game currentBoardView] setObjectiveTwo:emptyFlagTwo];
+    [[Game currentBoardView] setObjectiveThree:emptyFlagThree];
     
-    [[BoardView currentBoardView] addPlayer:testPlayerBlue];
-    [[BoardView currentBoardView] addPlayer:testPlayerRed];
+    [[Game sharedInstance] addPlayer:testPlayerBlue];
+    [[Game sharedInstance] addPlayer:testPlayerRed];
     
     
     
-    [self.scrollView addSubview:[BoardView currentBoardView]];
+    [self.scrollView addSubview:[Game currentBoardView]];
     
 //    [Utils print:testBoard.boardArray tag:@"Board"];
     //[testBoard printBoard];
@@ -179,19 +182,19 @@ int gcd (int a, int b){
 }
 
 - (void) handleSwipeLeft: (UISwipeGestureRecognizer *)gesture {
-    [self movePlayer:[Player currentPlayer] inDirection:DirectionLeft];
+    [self movePlayer:[Game currentPlayer] inDirection:DirectionLeft];
 }
 
 - (void) handleSwipeRight: (UISwipeGestureRecognizer *)gesture {
-    [self movePlayer:[Player currentPlayer] inDirection:DirectionRight];
+    [self movePlayer:[Game currentPlayer] inDirection:DirectionRight];
 }
 
 - (void) handleSwipeDown: (UISwipeGestureRecognizer *)gesture {
-    [self movePlayer:[Player currentPlayer] inDirection:DirectionDown];
+    [self movePlayer:[Game currentPlayer] inDirection:DirectionDown];
 }
 
 - (void) handleSwipeUp: (UISwipeGestureRecognizer *)gesture {
-    [self movePlayer:[Player currentPlayer] inDirection:DirectionUp];
+    [self movePlayer:[Game currentPlayer] inDirection:DirectionUp];
 }
 
 - (void) movePlayer: (Player *) player inDirection: (DirectionType) direction {
@@ -212,7 +215,7 @@ int gcd (int a, int b){
     
     
     [UIView animateWithDuration:0.2f animations:^{
-        [[BoardView currentBoardView] movePlayer:player toPosition:newPosition];
+        [[Game sharedInstance] movePlayer:player toPosition:newPosition];
     }];
     
     [self setScrollOffset];
@@ -225,11 +228,11 @@ int gcd (int a, int b){
 }
 
 - (void) setScrollOffset {
-    CGFloat newContentOffsetX = ([Player currentPlayer].position.x + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenWidth]/2.0f;
-    CGFloat newContentOffsetY = ([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenHeight]/2.0f;
+    CGFloat newContentOffsetX = ([Game currentPlayer].position.x + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenWidth]/2.0f;
+    CGFloat newContentOffsetY = ([Game currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize] - ([[SpaceView sharedInstance] defaultSpaceSize]/2.0f) - [Utils screenHeight]/2.0f;
 //    CGFloat newContentOffsetY = (([Player currentPlayer].position.y + 1) * [[SpaceView sharedInstance] defaultSpaceSize]) - [Utils screenHeight] + [[SpaceView sharedInstance] defaultSpaceSize];
-    CGFloat rightEdgeBuffer = ([BoardView currentBoardView].frame.size.width - [Utils screenWidth]);
-    CGFloat bottomEdgeBuffer = ([BoardView currentBoardView].frame.size.height - [Utils screenHeight]);
+    CGFloat rightEdgeBuffer = ([Game currentBoardView].frame.size.width - [Utils screenWidth]);
+    CGFloat bottomEdgeBuffer = ([Game currentBoardView].frame.size.height - [Utils screenHeight]);
     
     //NSLog(@"Right edge buffer: %f", rightEdgeBuffer);
     if (newContentOffsetY < 0) {
@@ -269,11 +272,11 @@ int gcd (int a, int b){
     }];
 }
 - (IBAction)switchPlayerAction:(id)sender {
-    if ([[Player currentPlayer].playerID isEqualToString:testPlayerRed.playerID]) {
-        [Player setCurrentPlayer:testPlayerBlue];
+    if ([[Game currentPlayer].playerID isEqualToString:testPlayerRed.playerID]) {
+        [Game setCurrentPlayer:testPlayerBlue];
     }
-    else if ([[Player currentPlayer].playerID isEqualToString:testPlayerBlue.playerID]) {
-        [Player setCurrentPlayer:testPlayerRed];
+    else if ([[Game currentPlayer].playerID isEqualToString:testPlayerBlue.playerID]) {
+        [Game setCurrentPlayer:testPlayerRed];
     }
     
     [self setScrollOffset];
@@ -281,10 +284,10 @@ int gcd (int a, int b){
 }
 
 - (void) setSwitchBackground {
-    if ([Player currentPlayer].type == ItemTypeEnemy) {
+    if ([Game currentPlayer].type == ItemTypeEnemy) {
         self.switchPlayerButton.backgroundColor = [Utils colorWithHexString:@"2980b9"];
     }
-    else if ([Player currentPlayer].type == ItemTypeFriendly) {
+    else if ([Game currentPlayer].type == ItemTypeFriendly) {
         self.switchPlayerButton.backgroundColor = [Utils colorWithHexString:@"c0392b"];
     }
 }
@@ -301,14 +304,8 @@ int gcd (int a, int b){
     }
 }
 
-- (Space *)objectiveSpaceForPlayer:(Player *)player {
-    
-    
-    return nil;
-}
-
 - (void) didMoveAIPlayer:(Player *)player {
-    if ([player.playerID isEqualToString:[Player currentPlayer].playerID]) {
+    if ([player.playerID isEqualToString:[Game currentPlayer].playerID]) {
         [self setScrollOffset];
     }
 }

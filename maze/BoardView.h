@@ -9,25 +9,14 @@
 #import "Maze-Prefix.pch"
 @class Board;
 @class SpaceView;
-#import "Player.h"
+@class Player;
+@class Space;
 
 @protocol BoardViewDelegate;
 
 @interface BoardView : UIView
 
 @property (weak, nonatomic) id<BoardViewDelegate> delegate;
-
-/// Current boardView instance
-+ (id)sharedInstance;
-
-/// Set the current boardView
-+ (void) setCurrentBoardView: (BoardView *) boardView;
-
-/// Return the current board
-+ (BoardView *) currentBoardView;
-
-/// Current board
-@property (strong, nonatomic) BoardView *currentBoardViewInstance;
 
 /// Board for view
 @property (strong, nonatomic) Board *board;
@@ -52,15 +41,6 @@
 
 /// Initializes view wiht board
 - (instancetype) initWithBoard: (Board *) board;
-
-/// Adds a player to the board
-- (void) addPlayer: (Player *) player;
-
-/// Moves a player to a position
-- (void) movePlayer: (Player *) player toPosition: (CGPoint) position;
-
-/// Remove a player from the board
-- (void) removePlayer: (Player *) player;
 
 /// Returns a spaceView for a given point
 - (SpaceView *) spaceViewForPoint: (CGPoint) point;

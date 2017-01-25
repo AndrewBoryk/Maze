@@ -10,8 +10,9 @@
 #import <SpriteKit/SpriteKit.h>
 #import <GameplayKit/GameplayKit.h>
 #import "BoardView.h"
+#import "Player.h"
 
-@interface GameViewController : UIViewController <UIGestureRecognizerDelegate, UIScrollViewDelegate, BoardViewDelegate, PathManagerDataSource>
+@interface GameViewController : UIViewController <UIGestureRecognizerDelegate, UIScrollViewDelegate, BoardViewDelegate, PathManagerDelegate>
 
 /// Scroll view for board
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;

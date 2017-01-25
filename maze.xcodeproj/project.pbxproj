@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		450863D71E381A0A00AD764B /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 450863D61E381A0A00AD764B /* Game.m */; };
 		45331C7C1E08FC7E00E3B668 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331C7B1E08FC7E00E3B668 /* main.m */; };
 		45331C7F1E08FC7E00E3B668 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45331C7E1E08FC7E00E3B668 /* AppDelegate.m */; };
 		45331C811E08FC7E00E3B668 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 45331C801E08FC7E00E3B668 /* GameScene.sks */; };
@@ -48,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		450863D51E381A0A00AD764B /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		450863D61E381A0A00AD764B /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
 		45331C771E08FC7E00E3B668 /* maze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = maze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45331C7B1E08FC7E00E3B668 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		45331C7D1E08FC7E00E3B668 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -116,6 +119,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450863D81E381A1000AD764B /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				450863D51E381A0A00AD764B /* Game.h */,
+				450863D61E381A0A00AD764B /* Game.m */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
 		45331C6E1E08FC7E00E3B668 = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +159,7 @@
 				45331C851E08FC7E00E3B668 /* GameScene.m */,
 				45331C871E08FC7E00E3B668 /* GameViewController.h */,
 				45331C881E08FC7E00E3B668 /* GameViewController.m */,
+				450863D81E381A1000AD764B /* Game */,
 				45331CB71E08FE8500E3B668 /* Space */,
 				45331CBF1E0905C300E3B668 /* Player */,
 				45331CC41E09082400E3B668 /* Board */,
@@ -383,6 +396,7 @@
 				45ECF7391E0999A70008108C /* BoardView.m in Sources */,
 				45331CB61E08FE5600E3B668 /* Space.m in Sources */,
 				45AE22C51E36F740004B9F00 /* PlayerView.m in Sources */,
+				450863D71E381A0A00AD764B /* Game.m in Sources */,
 				45331CC31E09081E00E3B668 /* Board.m in Sources */,
 				45331C891E08FC7E00E3B668 /* GameViewController.m in Sources */,
 				45331C7F1E08FC7E00E3B668 /* AppDelegate.m in Sources */,

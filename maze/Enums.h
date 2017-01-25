@@ -37,6 +37,14 @@ typedef NS_ENUM(NSInteger, ItemType) {
     ItemTypeWall,  // 3
 };
 
+/// State of player (AI)
+typedef NS_ENUM(NSInteger, PlayerState) {
+    StateAttacking, // 0
+    StateDefending,  // 1
+    StateCapturing,  // 2
+    StateRetreating,  // 3
+};
+
 /// Direction types
 typedef NS_ENUM(NSInteger, DirectionType) {
     DirectionLeft,

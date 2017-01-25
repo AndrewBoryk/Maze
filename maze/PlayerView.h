@@ -7,8 +7,8 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "Player.h"
-#import "BoardView.h"
+@class Player;
+@class BoardView;
 
 
 @interface PlayerView : UIView

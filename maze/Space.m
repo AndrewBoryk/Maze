@@ -8,6 +8,7 @@
 
 #import "Space.h"
 #import "Board.h"
+#import "Game.h"
 
 @implementation Space
 
@@ -47,7 +48,7 @@
 
 + (BOOL) canPass:(CGPoint )point playerType:(ItemType)playerType {
     
-    Space *space = [[Board currentBoard] spaceForPoint:point];
+    Space *space = [[Game currentBoard] spaceForPoint:point];
     if ([Utils notNull:space]) {
         if (playerType == space.type) {
             return YES;

@@ -7,22 +7,10 @@
 //
 
 #import "Maze-Prefix.pch"
-#import "Space.h"
+@class Space;
 @class SpaceView;
 
 @interface Board : NSObject
-
-/// Current board instance
-+ (id)sharedInstance;
-
-/// Set the current board
-+ (void) setCurrentBoard: (Board *) board;
-
-/// Return the current board
-+ (Board *) currentBoard;
-
-/// Current board
-@property (strong, nonatomic) Board *currentBoardInstance;
 
 /// Array which holds coordinates for board
 @property (strong, nonatomic) NSMutableArray *boardArray;
@@ -32,12 +20,6 @@
 
 /// Height for the board
 @property NSInteger height;
-
-/// Dictionary containing players
-@property NSMutableArray *playerArray;
-
-/// Dictionary containing players
-@property NSMutableArray *playerViewArray;
 
 /// initialized board with scale
 - (instancetype) initWithScale: (NSInteger) scale;
